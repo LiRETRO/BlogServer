@@ -12,11 +12,10 @@ import org.springframework.web.servlet.ModelAndView;
 public class MainController extends BaseController {
 
     @RequestMapping(value = "index", method = RequestMethod.GET)
-    @ResponseBody
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("index");
-        modelAndView.addObject("name", "FLiNG");
+        modelAndView.addObject("title", "FLiNG");
         return modelAndView;
     }
 
