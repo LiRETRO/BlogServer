@@ -1,0 +1,24 @@
+server:
+  # 端口配置
+  port: 80
+spring:
+  # 开发profile
+  profiles: "publish"
+  # 数据库连接配置
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: "jdbc:mysql://120.79.153.123:3306/demo"
+    username: "root"
+    password: "retroLiA1."
+  data:
+    # MongoDB配置
+    mongodb:
+      database: "project"
+      host: "127.0.0.1"
+      port: 27017
+  # rabbitMQ配置
+  rabbitmq:
+    host: "127.0.0.1"
+    port: 5672
+    username: "guest"
+    password: "8566456a"
