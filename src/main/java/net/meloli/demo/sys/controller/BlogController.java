@@ -22,20 +22,6 @@ public class BlogController extends BaseController {
     @Autowired
     IProducerService iProducerService;
 
-    @RequestMapping(value = "index", method = RequestMethod.GET)
-    public ModelAndView index() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("index");
-        modelAndView.addObject("title", "FLiNG");
-        return modelAndView;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "getValue")
-    public String getValue() {
-        return "haha";
-    }
-
     @RequestMapping(value = "sendMsgTest", method = RequestMethod.GET)
     public void sendMsgTest() {
         // 循环发送消息，测试接收者是否可以接收到
