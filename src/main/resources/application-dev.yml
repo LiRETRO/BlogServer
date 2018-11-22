@@ -1,6 +1,6 @@
 server:
   # 端口配置
-  port: 8080
+  port: 80
 spring:
   # 开发profile
   profiles: "dev"
@@ -14,7 +14,7 @@ spring:
     # MongoDB配置
     mongodb:
       database: "project"
-      host: "127.0.0.1"
+      host: "148.70.10.229"
       port: 27017
   # rabbitMQ配置
   rabbitmq:

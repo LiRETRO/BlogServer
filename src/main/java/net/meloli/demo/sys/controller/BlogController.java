@@ -1,17 +1,17 @@
 package net.meloli.demo.sys.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import net.meloli.demo.sys.base.BaseController;
 import net.meloli.demo.sys.rabbitmq.config.RabbitMQConfig;
 import net.meloli.demo.sys.rabbitmq.service.IProducerService;
 import net.meloli.demo.sys.service.inf.IBlogService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
+@Api(description = "博客接口", tags = "BlogController")
 @RestController
 @RequestMapping("/api/blog")
 public class BlogController extends BaseController {
@@ -30,6 +30,13 @@ public class BlogController extends BaseController {
         }
     }
 
+    @ApiOperation(value = "异常测试", notes = "异常测试中")
+    @RequestMapping(value = "exceptionTest", method = RequestMethod.GET)
+    public void exceptionTest() throws Exception {
+        throw new Exception("异常测试");
+    }
+
+    @ApiOperation(value = "获取博客List", notes = "获取博客List")
     @RequestMapping(value = "getBlogList", method = RequestMethod.GET)
     public Object getBlogList() {
         return iBlogService.getBlogList();

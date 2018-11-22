@@ -18,5 +18,7 @@ public abstract class MongoDBUtils {
     public static class CollectionName {
         // 博客
         public static final String BLOG = "blog";
+
+        public static final String GLOBAL_EXCEPTION_INFO = "global_exception_info";
     }
 }

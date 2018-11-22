@@ -18,7 +18,7 @@ public class MvcDataDto {
     // 返回消息
     private String resultMessage;
     // 返回结果
-    private Object reusltObj;
+    private Object resultObj;
     // 返回参数
     private Object param;
     // 返回结果冗余
@@ -42,12 +42,12 @@ public class MvcDataDto {
         return this;
     }
 
-    public Object getReusltObj() {
-        return reusltObj;
+    public Object getResultObj() {
+        return resultObj;
     }
 
-    public MvcDataDto setReusltObj(Object reusltObj) {
-        this.reusltObj = reusltObj;
+    public MvcDataDto setResultObj(Object resultObj) {
+        this.resultObj = resultObj;
         return this;
     }
 

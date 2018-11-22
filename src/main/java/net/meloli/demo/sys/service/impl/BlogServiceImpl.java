@@ -27,7 +27,7 @@ public class BlogServiceImpl implements IBlogService {
     public MvcDataDto getBlogList() {
         MvcDataDto data = MvcDataDto.getInstance();
         List<Blog> blogList =  mongoTemplate.findAll(Blog.class, MongoDBUtils.CollectionName.BLOG);
-        data.setReusltObj(blogList);
+        data.setResultObj(blogList);
         data.setResultCode(MvcDataDto.SUCCESS);
         return data;
     }
