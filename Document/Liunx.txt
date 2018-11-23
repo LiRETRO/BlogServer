@@ -1,0 +1,3 @@
+rpm -ivh || yum install 命令用来安装软件
+
+yum list xxx 可以找到安装软件的包名 并且使用 yum remove <包名> 移除软件

@@ -2,7 +2,7 @@ server:
   # 端口配置
   port: 80
 spring:
-  # 开发profile
+  # 发布profile
   profiles: "publish"
   # 数据库连接配置
   datasource:
@@ -14,11 +14,11 @@ spring:
     # MongoDB配置
     mongodb:
       database: "project"
-      host: "127.0.0.1"
+      host: "172.27.0.5"
       port: 27017
   # rabbitMQ配置
   rabbitmq:
-    host: "127.0.0.1"
+    host: "172.27.0.5"
     port: 5672
-    username: "guest"
-    password: "8566456a"
+    username: "blogmanager"
+    password: "123456"

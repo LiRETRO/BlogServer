@@ -1,0 +1,28 @@
+wget http://packages.erlang-solutions.com/erlang-solutions-1.0-1.noarch.rpm 下载erlang rpm包
+
+# 服务启动 停止
+service rabbitmq-server start
+service rabbitmq-server stop
+
+# 安装可视化插件
+rabbitmq-plugins enable rabbitmq-management
+
+# 增删该查 用户及其权限
+# 添加
+rabbitmqctl add_user <account> <password>
+# 删除用户
+rabbitmqctl delete_user Username
+# 更改密码
+rabbitmqctl change_password Username Newpassword
+# 添加权限
+rabbitmqctl set_user_tags <account> administrator
+# 设置允许访问
+rabbitmqctl set_permissions -p "/" mq ".*" ".*" ".*
+# 查看授权
+rabbitmqctl list_permissions -p "/"
+# 设置允许远程访问
+cat /etc/rabbitmq/rabbitmq.config [ {rabbit, [{tcp_listeners, [5672]}, {loopback_users, ["mq"]}]}].
+
+
+# 清除权限
+rabbitmqctl clear_permissions [-p VHostPath] User
