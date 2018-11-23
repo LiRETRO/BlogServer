@@ -1,0 +1,121 @@
+Nginx 命令：
+# 导出环境变量
+export [NAME]=[PATH]
+# 启动
+./nginx
+# 停止
+nginx -s stop
+# 重载(更改配置文件等)
+nginx -s reload
+# 测试nginx配置脚本是否正常
+nginx -t
+# 开机自启
+在/etc/rc.local 中加入nginx路径[/usr/local/nginx/sbin/nginx]
+# 指定Nginx配置文件
+nginx -c [Config Path]
+
+Nginx 安装
+# 下载
+wget [Nginx 下载地址]
+# 解压
+tar -zxvf nginx-xxx.tar.gz
+# 配置
+./configure | ./configure [Nginx install Path]
+  # 配置带ssl模块   ./configure --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_ssl_module
+# 编译与安装
+make && make install
+# 配置环境变量
+vim /etc/profile  export [NAME]=[PATH] 
+# 重新编译文件
+source /etc/profile
+
+Nginx 反向代理配置模板
+# 在 http 节点下添加
+server {
+    listen: 80 // 监听80端口
+    server_name: www.meloli.net // 转发到指定地址：端口
+    location / {
+        root html;
+        index index.html index.html;
+        proxy_pass http://www.meloli.net/;  // 代理到指定地址：端口
+    }
+}
+upstream www.meloli.net {
+    server ip:port; // 代理的地址 + 端口
+    # upstream分配方式
+    1. 轮询，即每个请求按照时间顺序轮流分配到不同的后端服务器，如果某个后端服务器down掉后，能自动剔除。
+    2.weight 即可以指定轮询比率，weight和访问几率成正比，主要应用于后端服务器异质的场景下。server ip:port weight=1; server ip:port weight=2;
+    3.ip_hash 每个请求按照访问ip（即Nginx的前置服务器或者客户端IP）的hash结果分配，这样每个访客会固定访问一个后端服务器，可以解决session一致问题。 在顶部加上ip_hash即可
+    4. fair fair顾名思义，公平地按照后端服务器的响应时间（rt）来分配请求，响应时间短即rt小的后端服务器优先分配请求。
+    5. url_hash 与ip_hash类似，但是按照访问url的hash结果来分配请求，使得每个url定向到同一个后端服务器，主要应用于后端服务器为缓存时的场景下。
+}
+
+Nginx 配置Https
+# 将证书上传到服务器上
+# 监听443端口
+server {
+	#监听443端口。443为知名端口号，主要用于HTTPS协议
+	listen       443 ssl;
+
+	#定义使用www.xx.com访问
+	server_name  www.aabbccdd.com;
+
+	#ssl证书文件位置(常见证书文件格式为：crt/pem)
+	ssl_certificate      cert.pem;
+	#ssl证书key位置
+	ssl_certificate_key  cert.key;
+
+	#ssl配置参数（选择性配置）
+	ssl_session_cache    shared:SSL:1m;
+	ssl_session_timeout  5m;
+	#数字签名，此处使用MD5
+	ssl_ciphers  HIGH:!aNULL:!MD5;
+	ssl_prefer_server_ciphers  on;
+
+	location / {
+	  root   /root;
+	  index  index.html index.htm;
+	}
+	
+	#编码格式
+	charset utf-8;
+	
+	#代理配置参数
+	proxy_connect_timeout 180;
+	proxy_send_timeout 180;
+	proxy_read_timeout 180;
+	proxy_set_header Host $host;
+	proxy_set_header X-Forwarder-For $remote_addr;
+
+	#反向代理的路径（和upstream绑定），location 后面设置映射的路径
+	location / {
+		proxy_pass http://zp_server1;
+	} 
+
+	#静态文件，nginx自己处理
+	location ~ ^/(images|javascript|js|css|flash|media|static)/ {
+		root C:/XMCARES_X/WorkSpace/nginx/src/main/webapp/views;
+		#过期30天，静态文件不怎么更新，过期可以设大一点，如果频繁更新，则可以设置得小一点。
+		expires 30d;
+	}
+
+	#设定查看Nginx状态的地址
+	location /NginxStatus {
+		stub_status           on;
+		access_log            on;
+		auth_basic            "NginxStatus";
+		auth_basic_user_file  conf/htpasswd;
+	}
+
+	#禁止访问 .htxxx 文件
+	location ~ //.ht {
+		deny all;
+	}
+	
+	#错误处理页面（可选择性配置）
+	#error_page   404              /404.html;
+	#error_page   500 502 503 504  /50x.html;
+	#location = /50x.html {
+	#    root   html;
+	#}
+}
