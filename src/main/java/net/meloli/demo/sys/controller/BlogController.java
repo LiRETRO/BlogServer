@@ -22,6 +22,7 @@ public class BlogController extends BaseController {
     @Autowired
     IProducerService iProducerService;
 
+    @ApiOperation(value = "发送RbbitMQ消息测试", notes = "发送RabbitMQ消息测试")
     @RequestMapping(value = "sendMsgTest", method = RequestMethod.GET)
     public void sendMsgTest() {
         // 循环发送消息，测试接收者是否可以接收到
