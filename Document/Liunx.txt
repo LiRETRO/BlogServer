@@ -1,3 +1,10 @@
 rpm -ivh || yum install 命令用来安装软件
 
 yum list xxx 可以找到安装软件的包名 并且使用 yum remove <包名> 移除软件
+
+使用find [<dic>, -name] [filename] 来查找特定目录下符合名称的文件 filename可以使用通配符 like * % 
+
+使用 "alias aliasname='command'" >> ~/.bash_aliases && source ~/.bash_aliase 来设置alias, 这样设置永久有效. 如果不修改bash_aliases的alias只对此次会话有效
+使用 unalias 来删除 化名
+
+使用 cat 来输出文本  使用 >> 来追加字符串到某个文本,如:"alias aliasname='command'" >> ~/.bash_aliases
