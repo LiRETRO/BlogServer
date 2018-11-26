@@ -21,7 +21,7 @@ public class DemoApplicationTests {
     @Autowired
     IProducerService iProducerService;
 
-    @Test
+ /*   @Test
     public void contextLoads() {
         Blog blog = new Blog();
         blog.setBlogId("TEST_123456");
@@ -32,14 +32,14 @@ public class DemoApplicationTests {
         blog.setBlogPublishDate(new Date());
         blog.setBlogIsDel(false);
         mongoTemplate.save(blog, MongoDBUtils.CollectionName.BLOG);
-    }
+    }*/
 
-    @Test
+/*    @Test
     public void rabbitMQTest() {
         // 循环发送消息，测试接收者是否可以接收到
         for(int i = 0, len = 10; i < len; ++i ) {
             iProducerService.send(RabbitMQConfig.QUEUE, "测试RabbitMQ消息，这是第" + (i + 1) + "条");
         }
-    }
+    }*/
 
 }

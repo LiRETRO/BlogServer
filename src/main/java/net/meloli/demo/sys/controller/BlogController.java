@@ -37,6 +37,12 @@ public class BlogController extends BaseController {
         throw new Exception("异常测试");
     }
 
+    @ApiOperation(value = "获取博客单条详情", notes = "通过ID获取博客详情")
+    @RequestMapping(value = "getBlogDetail", method = RequestMethod.GET)
+    public Object getBlogDetail(String id) {
+        return iBlogService.getBlogDetail(id);
+    }
+
     @ApiOperation(value = "获取博客List", notes = "获取博客List")
     @RequestMapping(value = "getBlogList", method = RequestMethod.GET)
     public Object getBlogList() {
