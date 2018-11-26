@@ -48,6 +48,7 @@ public class BlogServiceImpl implements IBlogService {
     public MvcDataDto addBlog(Blog blog) {
         MvcDataDto data = MvcDataDto.getInstance();
         blog.setBlogId(IdWorker.getId());
+        blog.setBlogIsDel(false);
         blog.setBlogPublishDate(new Date());
         blog.setBlogPublisher("LiRETRO");
         blog.setBlogPublisherCode("");

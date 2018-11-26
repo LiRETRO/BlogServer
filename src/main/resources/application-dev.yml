@@ -1,6 +1,6 @@
 server:
   # 端口配置
-  port: 80
+  port: 8000
 spring:
   # 开发profile
   profiles: "dev"

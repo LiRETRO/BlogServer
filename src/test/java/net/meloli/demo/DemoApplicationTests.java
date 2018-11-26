@@ -21,14 +21,14 @@ public class DemoApplicationTests {
     @Autowired
     IProducerService iProducerService;
 
- /*   @Test
+/*    @Test
     public void contextLoads() {
         Blog blog = new Blog();
         blog.setBlogId("TEST_123456");
-        blog.setBlogTitle("测试标题");
-        blog.setBlogContent("测试正文");
-        blog.setBlogPublisher("Administrator");
-        blog.setBlogPublisherCode("Administrator");
+        blog.setBlogTitle("关于RabbitMQ在Liunx下的部署");
+        blog.setBlogContent("关于RabbitMQ在Liunx下的部署关于RabbitMQ在Liunx下的部署关于RabbitMQ在Liunx下的部署关于RabbitMQ在Liunx下的部署关于RabbitMQ在Liunx下的部署关于RabbitMQ在Liunx下的部署关于RabbitMQ在Liunx下的部署关于RabbitMQ在Liunx下的部署关于RabbitMQ在Liunx下的部署");
+        blog.setBlogPublisher("LiRETRO");
+        blog.setBlogPublisherCode("LiRETRO");
         blog.setBlogPublishDate(new Date());
         blog.setBlogIsDel(false);
         mongoTemplate.save(blog, MongoDBUtils.CollectionName.BLOG);

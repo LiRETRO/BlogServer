@@ -3,6 +3,7 @@ package net.meloli.demo.sys.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import net.meloli.demo.sys.base.BaseController;
+import net.meloli.demo.sys.entity.Blog;
 import net.meloli.demo.sys.rabbitmq.config.RabbitMQConfig;
 import net.meloli.demo.sys.rabbitmq.service.IProducerService;
 import net.meloli.demo.sys.service.inf.IBlogService;
@@ -47,5 +48,11 @@ public class BlogController extends BaseController {
     @RequestMapping(value = "getBlogList", method = RequestMethod.GET)
     public Object getBlogList() {
         return iBlogService.getBlogList();
+    }
+
+    @ApiOperation(value = "发布博客", notes = "发布博客")
+    @RequestMapping(value = "addBlog", method = RequestMethod.POST)
+    public Object addBlog(Blog blog) {
+        return iBlogService.addBlog(blog);
     }
 }
