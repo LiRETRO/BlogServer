@@ -2,6 +2,7 @@ package net.meloli.demo.sys.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import net.meloli.demo.sys.base.BaseController;
 import net.meloli.demo.sys.rabbitmq.config.RabbitMQConfig;
 import net.meloli.demo.sys.rabbitmq.service.IProducerService;
@@ -22,7 +23,7 @@ public class BlogController extends BaseController {
     @Autowired
     IProducerService iProducerService;
 
-    @ApiOperation(value = "发送RbbitMQ消息测试", notes = "发送RabbitMQ消息测试")
+    @ApiOperation(value = "发送RbbitMQ消息测试", notes = "发送RabbitMQ消息测试", authorizations = @Autco    cohorization("admin"))
     @RequestMapping(value = "sendMsgTest", method = RequestMethod.GET)
     public void sendMsgTest() {
         // 循环发送消息，测试接收者是否可以接收到
