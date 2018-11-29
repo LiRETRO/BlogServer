@@ -54,6 +54,7 @@ public class BlogServiceImpl implements IBlogService {
         blog.setBlogPublisherCode("");
         mongoTemplate.save(blog, MongoDBUtils.CollectionName.BLOG);
         data.setResultCode(MvcDataDto.SUCCESS);
+        data.setResultMessage("发布博客成功！");
         return data;
     }
 

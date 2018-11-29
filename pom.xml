@@ -8,7 +8,7 @@
     <version>0.1</version>
     <packaging>jar</packaging>
 
-    <name>Blog</name>
+    <name>BlogService</name>
     <description>Blog project for Spring Boot</description>
 
     <parent>
@@ -92,6 +92,12 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
             <version>2.9.2</version>
+        </dependency>
+        <!-- Alibaba FastJson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.47</version>
         </dependency>
     </dependencies>
 
