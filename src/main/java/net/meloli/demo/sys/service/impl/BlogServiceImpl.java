@@ -5,6 +5,7 @@ import net.meloli.demo.sys.mongodb.util.MongoDBUtils;
 import net.meloli.demo.sys.service.inf.IBlogService;
 import net.meloli.demo.sys.util.IdWorker;
 import net.meloli.demo.sys.util.MvcDataDto;
+import net.meloli.demo.sys.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -29,13 +30,22 @@ public class BlogServiceImpl implements IBlogService {
      * @return MvcDataDto
      */
     @Override
-    public MvcDataDto getBlogList() {
+    public MvcDataDto getBlogList(MvcDataDto param) {
         MvcDataDto data = MvcDataDto.getInstance();
-        Query query = new Query();
-        query.with(new Sort(Sort.Direction.DESC, "blogPublishDate"));
-        List<Blog> blogList = mongoTemplate.find(query, Blog.class, MongoDBUtils.CollectionName.BLOG);
-        data.setResultObj(blogList);
-        data.setResultCode(MvcDataDto.SUCCESS);
+        Page page = param.getPage();
+        if (page != null) {
+            Query query = new Query();
+            query.with(new Sort(Sort.Direction.DESC, "blogPublishDate"));
+            Long skip = (long)(page.getPageNum() - 1) * page.getPageSize();
+            query.skip(skip);
+            query.limit(page.getPageSize());
+            Long totalNum = mongoTemplate.count(new Query(), MongoDBUtils.CollectionName.BLOG);
+            page.setTotalNum(totalNum);
+            List<Blog> blogList = mongoTemplate.find(query, Blog.class, MongoDBUtils.CollectionName.BLOG);
+            data.setPage(page);
+            data.setResultObj(blogList);
+            data.setResultCode(MvcDataDto.SUCCESS);
+        }
         return data;
     }
 

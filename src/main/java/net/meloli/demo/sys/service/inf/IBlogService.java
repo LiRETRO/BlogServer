@@ -9,7 +9,7 @@ public interface IBlogService {
      * 获取博客列表
      * @return MvcDataDto
      */
-    MvcDataDto getBlogList();
+    MvcDataDto getBlogList(MvcDataDto param);
 
     /**
      * 添加博客

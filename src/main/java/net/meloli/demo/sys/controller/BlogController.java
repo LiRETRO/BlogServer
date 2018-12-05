@@ -1,18 +1,15 @@
 package net.meloli.demo.sys.controller;
 
-import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.Authorization;
 import net.meloli.demo.sys.base.BaseController;
 import net.meloli.demo.sys.entity.Blog;
 import net.meloli.demo.sys.rabbitmq.config.RabbitMQConfig;
 import net.meloli.demo.sys.rabbitmq.service.IProducerService;
 import net.meloli.demo.sys.service.inf.IBlogService;
+import net.meloli.demo.sys.util.MvcDataDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api(description = "博客接口", tags = "BlogController")
 @RestController
@@ -26,7 +23,7 @@ public class BlogController extends BaseController {
     IProducerService iProducerService;
 
     @ApiOperation(value = "发送RbbitMQ消息测试", notes = "发送RabbitMQ消息测试")
-    @RequestMapping(value = "sendMsgTest", method = RequestMethod.GET)
+    @GetMapping(value = "sendMsgTest")
     public void sendMsgTest() {
         // 循环发送消息，测试接收者是否可以接收到
         for(int i = 0, len = 10; i < len; ++i ) {
@@ -35,25 +32,25 @@ public class BlogController extends BaseController {
     }
 
     @ApiOperation(value = "异常测试", notes = "异常测试中")
-    @RequestMapping(value = "exceptionTest", method = RequestMethod.GET)
+    @GetMapping(value = "exceptionTest")
     public void exceptionTest() throws Exception {
         throw new Exception("异常测试");
     }
 
     @ApiOperation(value = "获取博客单条详情", notes = "通过ID获取博客详情")
-    @RequestMapping(value = "getBlogDetail", method = RequestMethod.GET)
+    @GetMapping(value = "getBlogDetail")
     public Object getBlogDetail(String id) {
         return iBlogService.getBlogDetail(id);
     }
 
     @ApiOperation(value = "获取博客List", notes = "获取博客List")
-    @RequestMapping(value = "getBlogList", method = RequestMethod.GET)
-    public Object getBlogList() {
-        return iBlogService.getBlogList();
+    @PostMapping(value = "getBlogList", consumes = "application/json")
+    public Object getBlogList(@RequestBody MvcDataDto param) {
+        return iBlogService.getBlogList(param);
     }
 
     @ApiOperation(value = "发布博客", notes = "发布博客")
-    @RequestMapping(value = "addBlog", method = RequestMethod.POST)
+    @PostMapping(value = "addBlog")
     public Object addBlog(Blog blog) {
         return iBlogService.addBlog(blog);
     }

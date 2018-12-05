@@ -27,9 +27,5 @@ public class BaseController extends BaseContext {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type");
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        String method= request.getMethod();
-        if (method.equals("OPTIONS")){
-            response.setStatus(200);
-        }
     }
 }

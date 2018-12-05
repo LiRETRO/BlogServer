@@ -17,6 +17,8 @@ public class MvcDataDto {
     private String resultCode;
     // 返回消息
     private String resultMessage;
+    // 翻页对象
+    private Page page;
     // 返回结果
     private Object resultObj;
     // 返回参数
@@ -39,6 +41,15 @@ public class MvcDataDto {
 
     public MvcDataDto setResultMessage(String resultMessage) {
         this.resultMessage = resultMessage;
+        return this;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public MvcDataDto setPage(Page page) {
+        this.page = page;
         return this;
     }
 
