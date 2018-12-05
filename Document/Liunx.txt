@@ -8,3 +8,6 @@ yum list xxx 可以找到安装软件的包名 并且使用 yum remove <包名> 
 使用 unalias 来删除 化名
 
 使用 cat 来输出文本  使用 >> 来追加字符串到某个文本,如:"alias aliasname='command'" >> ~/.bash_aliases
+
+使用ssh [username]@[server_ip]连接一个远程服务器
+使用scp [file or folder path] [username]@[server_ip]:[folder path] 来向远程服务器上传文件 or 文件夹(文件夹需要-r指令: scp -r ...)
