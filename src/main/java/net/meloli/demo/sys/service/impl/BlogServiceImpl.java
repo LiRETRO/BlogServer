@@ -1,7 +1,11 @@
 package net.meloli.demo.sys.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import net.meloli.demo.sys.dto.VisitDto;
 import net.meloli.demo.sys.entity.Blog;
 import net.meloli.demo.sys.mongodb.util.MongoDBUtils;
+import net.meloli.demo.sys.rabbitmq.config.RabbitMQConfig;
+import net.meloli.demo.sys.rabbitmq.service.IProducerService;
 import net.meloli.demo.sys.service.inf.IBlogService;
 import net.meloli.demo.sys.util.IdWorker;
 import net.meloli.demo.sys.util.MvcDataDto;
@@ -23,6 +27,9 @@ public class BlogServiceImpl implements IBlogService {
 
     @Autowired
     MongoTemplate mongoTemplate;
+
+    @Autowired
+    IProducerService iProducerService;
 
     /**
      * 获取博客列表
@@ -60,6 +67,7 @@ public class BlogServiceImpl implements IBlogService {
         blog.setBlogId(IdWorker.getId());
         blog.setBlogIsDel(false);
         blog.setBlogPublishDate(new Date());
+        blog.setBlogVisitedCount(0L);
         blog.setBlogPublisher("LiRETRO");
         blog.setBlogPublisherCode("");
         mongoTemplate.save(blog, MongoDBUtils.CollectionName.BLOG);
@@ -78,6 +86,10 @@ public class BlogServiceImpl implements IBlogService {
         Query query = new Query();
         query.addCriteria(Criteria.where("blogId").is(id));
         Blog detail = mongoTemplate.findOne(query, Blog.class);
+        detail.setBlogVisitedCount(detail.getBlogVisitedCount() + 1);
+        // 新增一条访问记录, 并推送到消息队列
+        VisitDto visitDto = new VisitDto(id, new Date());
+        iProducerService.send(RabbitMQConfig.QUEUE, JSON.toJSONString(visitDto));
         data.setResultObj(detail);
         data.setResultCode(MvcDataDto.SUCCESS);
         return data;

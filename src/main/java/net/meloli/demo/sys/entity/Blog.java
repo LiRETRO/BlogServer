@@ -16,6 +16,8 @@ public class Blog implements Serializable {
     private String blogPublisher;
     // 发表人Code
     private String blogPublisherCode;
+    // 博客访问数
+    private Long blogVisitedCount;
     // 是否删除
     private Boolean blogIsDel;
     // 冗余 图片地址数组
@@ -59,6 +61,14 @@ public class Blog implements Serializable {
 
     public void setBlogPublisher(String blogPublisher) {
         this.blogPublisher = blogPublisher;
+    }
+
+    public Long getBlogVisitedCount() {
+        return blogVisitedCount;
+    }
+
+    public void setBlogVisitedCount(Long blogVisitedCount) {
+        this.blogVisitedCount = blogVisitedCount;
     }
 
     public String getBlogPublisherCode() {
