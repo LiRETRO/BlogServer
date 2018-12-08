@@ -86,7 +86,8 @@ public class BlogServiceImpl implements IBlogService {
         Query query = new Query();
         query.addCriteria(Criteria.where("blogId").is(id));
         Blog detail = mongoTemplate.findOne(query, Blog.class);
-        detail.setBlogVisitedCount(detail.getBlogVisitedCount() + 1);
+        Long blogVisitedCount = detail.getBlogVisitedCount() == null ? 0L : detail.getBlogVisitedCount();
+        detail.setBlogVisitedCount(blogVisitedCount + 1);
         // 新增一条访问记录, 并推送到消息队列
         VisitDto visitDto = new VisitDto(id, new Date());
         iProducerService.send(RabbitMQConfig.QUEUE, JSON.toJSONString(visitDto));

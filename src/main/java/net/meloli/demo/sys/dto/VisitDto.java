@@ -8,6 +8,8 @@ public class VisitDto {
     // 请求时间(访问时间)
     private Date requestTime;
 
+    public VisitDto() {}
+
     public VisitDto(String blogId, Date requestTime) {
         this.blogId = blogId;
         this.requestTime = requestTime;

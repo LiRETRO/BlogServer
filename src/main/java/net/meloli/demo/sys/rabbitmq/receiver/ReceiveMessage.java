@@ -23,6 +23,7 @@ public class ReceiveMessage {
 
     @RabbitHandler
     public void receiver(String json) {
+        System.out.printf("接收到RabbitMQJSon：%s\n", json);
         if(!"".equals(json)) {
             VisitDto visitDto = JSON.toJavaObject(JSON.parseObject(json), VisitDto.class);
             iBlogRecordService.saveBlogVisitRecord(visitDto);
