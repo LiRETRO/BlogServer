@@ -22,3 +22,18 @@ spring:
     port: 5672
     username: "blogmanager"
     password: "123456"
+# 配置hystrix防护机制
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMillisecond: 3000
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://blogmanager:123456@master:10237/eureka/
