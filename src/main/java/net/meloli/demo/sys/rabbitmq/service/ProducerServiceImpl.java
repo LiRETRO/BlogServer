@@ -31,11 +31,12 @@ public class ProducerServiceImpl implements IProducerService, RabbitTemplate.Con
      */
     @Override
     public void send(String queueName, String message, Long time) {
+//        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE, queueName, message, time);
     }
 
     @Override
     public void confirm(CorrelationData correlationData, boolean ack, String cause) {
-        System.out.println(" 回调id:" + correlationData);
+        System.out.println("回调id:" + correlationData);
         if (ack) {
             System.out.println("消息成功消费");
         } else {

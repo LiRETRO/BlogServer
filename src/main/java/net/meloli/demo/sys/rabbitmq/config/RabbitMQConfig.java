@@ -31,6 +31,7 @@ public class RabbitMQConfig {
     public static final String EXCHANGE = "mq_exchange";
 
     public static final String QUEUE = "mq_queue";
+    public static final String TEST_QUEUE = "test_queue";
 
     public static final String ROUTING_KEY = "mq_routingkey";
 
@@ -87,10 +88,29 @@ public class RabbitMQConfig {
     }
 
     /**
+     * 获取测试队列
+     * @return
+     */
+    @Bean
+    public Queue testQueue() {
+        return new Queue(TEST_QUEUE, true);
+    }
+
+    /**
      * 绑定到routingkey上
+     * @return
      */
     @Bean
     public Binding binding() {
         return BindingBuilder.bind(queue()).to(defaultExchange()).with(QUEUE);
+    }
+
+    /**
+     * 绑定测试队列
+     * @return
+     */
+    @Bean
+    public Binding bindingTest() {
+        return BindingBuilder.bind(testQueue()).to(defaultExchange()).with(TEST_QUEUE);
     }
 }

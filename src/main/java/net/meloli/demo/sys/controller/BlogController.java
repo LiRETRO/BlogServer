@@ -27,7 +27,7 @@ public class BlogController extends BaseController {
     public void sendMsgTest() {
         // 循环发送消息，测试接收者是否可以接收到
         for(int i = 0, len = 10; i < len; ++i ) {
-            iProducerService.send(RabbitMQConfig.QUEUE, "测试RabbitMQ消息，这是第" + (i + 1) + "条");
+            iProducerService.send(RabbitMQConfig.TEST_QUEUE, "测试RabbitMQ消息，这是第" + (i + 1) + "条");
         }
     }
 
