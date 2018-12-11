@@ -1,0 +1,11 @@
+后台支持（RabbitMQ， API Server，MongoDB，Redis（以后），MySQL（以后））：
+  IP Address: 148.70.10.229
+  RabbitMQ地址：/usr/lib/rabbitmq
+  MongoDB地址：/usr/local/mongodb
+  ApiServer地址：/home/server
+
+前台、负载均衡（Nginx, Eureka, Tomcat(Vue)）:
+  IP Address: 47.101.201.93 172.16.59.180 root blog!@#123P
+  Nginx地址：/usr/local/nginx
+  Tomcat地址：/usr/local/apache-tomcat-8.5-30
+  Vue地址：／home／blogProject
