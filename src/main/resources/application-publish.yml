@@ -31,10 +31,13 @@ hystrix:
         isolation:
           thread:
             timeoutInMillisecond: 3000
-
 eureka:
   instance:
     prefer-ip-address: true
+    hostname: 148.70.10.229
+    instance-id: ${spring.application.name}:${server.port}
+    # 设置IP地址
+    ip-address: 148.70.10.229
   client:
     service-url:
-      defaultZone: http://blogmanager:123456@meloli.net:10237/eureka/
+      defaultZone: http://blogmanager:123456@47.101.201.93:10237/eureka/
