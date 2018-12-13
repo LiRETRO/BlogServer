@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service("blogService")
 @Transactional
@@ -49,6 +51,9 @@ public class BlogServiceImpl implements IBlogService {
             Long totalNum = mongoTemplate.count(new Query(), MongoDBUtils.CollectionName.BLOG);
             page.setTotalNum(totalNum);
             List<Blog> blogList = mongoTemplate.find(query, Blog.class, MongoDBUtils.CollectionName.BLOG);
+            blogList = blogList.stream()
+                    .peek(item -> item.setBlogContent(item.getBlogContent().replaceAll("<[^>]*>", "")))
+                    .collect(Collectors.toList());
             data.setPage(page);
             data.setResultObj(blogList);
             data.setResultCode(MvcDataDto.SUCCESS);
