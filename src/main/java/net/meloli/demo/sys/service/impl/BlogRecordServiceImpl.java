@@ -39,8 +39,7 @@ public class BlogRecordServiceImpl implements IBlogRecordService {
         query.addCriteria(Criteria.where("blogId").is(visitDto.getBlogId()));
         Blog detail = mongoTemplate.findOne(query, Blog.class);
         Long blogVisitedCount = detail.getBlogVisitedCount() == null ? 0 : detail.getBlogVisitedCount();
-        detail.setBlogVisitedCount(blogVisitedCount + 1);
-        Update update = Update.update("blogVisitedCount", detail.getBlogVisitedCount() + 1);
+        Update update = Update.update("blogVisitedCount", blogVisitedCount + 1);
         mongoTemplate.updateFirst(query, update, MongoDBUtils.CollectionName.BLOG);
         return true;
     }
