@@ -37,12 +37,6 @@ public class BlogController extends BaseController {
         throw new Exception("异常测试");
     }
 
-    @ApiOperation(value = "获取博客单条详情", notes = "通过ID获取博客详情")
-    @GetMapping(value = "/getBlogDetail/{blogId}")
-    public Object getBlogDetail(@PathVariable String blogId) {
-        return iBlogService.getBlogDetail(blogId);
-    }
-
     @ApiOperation(value = "获取博客List", notes = "获取博客List")
     @PostMapping(value = "/getBlogList", consumes = "application/json")
     public Object getBlogList(@RequestBody MvcDataDto param) {
@@ -50,8 +44,20 @@ public class BlogController extends BaseController {
     }
 
     @ApiOperation(value = "发布博客", notes = "发布博客")
-    @PostMapping(value = "/addBlog")
+    @PutMapping(value = "/addBlog")
     public Object addBlog(Blog blog) {
         return iBlogService.addBlog(blog);
+    }
+
+    @ApiOperation(value = "获取博客单条详情", notes = "通过ID获取博客详情")
+    @GetMapping(value = "/getBlogDetail/{blogId}")
+    public Object getBlogDetail(@PathVariable String blogId) {
+        return iBlogService.getBlogDetail(blogId);
+    }
+
+    @ApiOperation(value = "删除博客", notes = "删除博客")
+    @DeleteMapping(value = "/deleteBlog/{blogId}")
+    public Object deleteBlog(@PathVariable String blogId) {
+        return iBlogService.deleteBlog(blogId);
     }
 }

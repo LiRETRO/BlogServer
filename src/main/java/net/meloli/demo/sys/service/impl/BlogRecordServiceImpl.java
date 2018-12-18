@@ -34,12 +34,12 @@ public class BlogRecordServiceImpl implements IBlogRecordService {
         blogRecord.setRecordId(IdWorker.getDateId());
         blogRecord.setBlogId(visitDto.getBlogId());
         blogRecord.setVisitTime(visitDto.getRequestTime());
-        mongoTemplate.save(blogRecord, MongoDBUtils.CollectionName.BLOG_RECORD);
         Query query = new Query();
         query.addCriteria(Criteria.where("blogId").is(visitDto.getBlogId()));
         Blog detail = mongoTemplate.findOne(query, Blog.class);
         Long blogVisitedCount = detail.getBlogVisitedCount() == null ? 0 : detail.getBlogVisitedCount();
         Update update = Update.update("blogVisitedCount", blogVisitedCount + 1);
+        mongoTemplate.save(blogRecord, MongoDBUtils.CollectionName.BLOG_RECORD);
         mongoTemplate.updateFirst(query, update, MongoDBUtils.CollectionName.BLOG);
         return true;
     }

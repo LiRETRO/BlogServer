@@ -90,7 +90,7 @@ public class BlogServiceImpl implements IBlogService {
         MvcDataDto data = MvcDataDto.getInstance();
         Query query = new Query();
         query.addCriteria(Criteria.where("blogId").is(id));
-        Blog detail = mongoTemplate.findOne(query, Blog.class);
+        Blog detail = mongoTemplate.findOne(query, Blog.class, MongoDBUtils.CollectionName.BLOG);
         Long blogVisitedCount = detail.getBlogVisitedCount() == null ? 0L : detail.getBlogVisitedCount();
         detail.setBlogVisitedCount(blogVisitedCount + 1);
         // 新增一条访问记录, 并推送到消息队列
@@ -98,6 +98,22 @@ public class BlogServiceImpl implements IBlogService {
         iProducerService.send(RabbitMQConfig.QUEUE, JSON.toJSONString(visitDto));
         data.setResultObj(detail);
         data.setResultCode(MvcDataDto.SUCCESS);
+        return data;
+    }
+
+    /**
+     * 删除博客
+     * @param blogId
+     * @return
+     */
+    @Override
+    public MvcDataDto deleteBlog(String blogId) {
+        MvcDataDto data = MvcDataDto.getInstance();
+        Query query = new Query();
+        query.addCriteria(Criteria.where("blogId").is(blogId));
+        mongoTemplate.remove(query, MongoDBUtils.CollectionName.BLOG);
+        data.setResultCode(MvcDataDto.SUCCESS);
+        data.setResultMessage("删除成功！");
         return data;
     }
 }

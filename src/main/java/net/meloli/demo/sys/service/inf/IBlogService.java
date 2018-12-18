@@ -23,4 +23,11 @@ public interface IBlogService {
      * @return
      */
     MvcDataDto getBlogDetail(String id);
+
+    /**
+     * 删除博客
+     * @param blogId
+     * @return
+     */
+    MvcDataDto deleteBlog(String blogId);
 }
