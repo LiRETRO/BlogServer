@@ -21,8 +21,13 @@ public class ControllerAdvisor {
     public void pointCut() {}
 
     @Around("pointCut()")
-    public void around(ProceedingJoinPoint joinPoint) {
-
+    public Object around(ProceedingJoinPoint joinPoint) {
+        try {
+            return joinPoint.proceed();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+        return null;
     }
 
 

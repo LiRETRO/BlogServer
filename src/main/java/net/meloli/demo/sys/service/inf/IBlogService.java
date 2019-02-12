@@ -3,13 +3,15 @@ package net.meloli.demo.sys.service.inf;
 import net.meloli.demo.sys.entity.Blog;
 import net.meloli.demo.sys.util.MvcDataDto;
 
+import java.util.List;
+
 public interface IBlogService {
 
     /**
      * 获取博客列表
      * @return MvcDataDto
      */
-    MvcDataDto getBlogList(MvcDataDto param);
+    MvcDataDto<List<Blog>> getBlogList(MvcDataDto param);
 
     /**
      * 添加博客
@@ -22,7 +24,7 @@ public interface IBlogService {
      * @param id
      * @return
      */
-    MvcDataDto getBlogDetail(String id);
+    MvcDataDto<Blog> getBlogDetail(String id);
 
     /**
      * 删除博客

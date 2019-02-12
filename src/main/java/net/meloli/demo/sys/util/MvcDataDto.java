@@ -1,6 +1,10 @@
 package net.meloli.demo.sys.util;
 
-public class MvcDataDto {
+import java.io.Serializable;
+
+public class MvcDataDto<T> implements Serializable {
+
+    private static final long serialVersionUID = -4505655308965878999L;
 
     private MvcDataDto() {}
 
@@ -20,7 +24,7 @@ public class MvcDataDto {
     // 翻页对象
     private Page page;
     // 返回结果
-    private Object resultObj;
+    private T resultObj;
     // 返回参数
     private Object param;
     // 返回结果冗余
@@ -53,11 +57,11 @@ public class MvcDataDto {
         return this;
     }
 
-    public Object getResultObj() {
+    public T getResultObj() {
         return resultObj;
     }
 
-    public MvcDataDto setResultObj(Object resultObj) {
+    public MvcDataDto setResultObj(T resultObj) {
         this.resultObj = resultObj;
         return this;
     }

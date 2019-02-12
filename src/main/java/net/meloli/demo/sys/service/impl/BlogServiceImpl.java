@@ -39,8 +39,8 @@ public class BlogServiceImpl implements IBlogService {
      * @return MvcDataDto
      */
     @Override
-    public MvcDataDto getBlogList(MvcDataDto param) {
-        MvcDataDto data = MvcDataDto.getInstance();
+    public MvcDataDto<List<Blog>> getBlogList(MvcDataDto param) {
+        MvcDataDto<List<Blog>> data = MvcDataDto.getInstance();
         Page page = param.getPage();
         if (page != null) {
             Query query = new Query();
@@ -86,8 +86,8 @@ public class BlogServiceImpl implements IBlogService {
      * @return MvcDataDto
      */
     @Override
-    public MvcDataDto getBlogDetail(String id) {
-        MvcDataDto data = MvcDataDto.getInstance();
+    public MvcDataDto<Blog> getBlogDetail(String id) {
+        MvcDataDto<Blog> data = MvcDataDto.getInstance();
         Query query = new Query();
         query.addCriteria(Criteria.where("blogId").is(id));
         Blog detail = mongoTemplate.findOne(query, Blog.class, MongoDBUtils.CollectionName.BLOG);

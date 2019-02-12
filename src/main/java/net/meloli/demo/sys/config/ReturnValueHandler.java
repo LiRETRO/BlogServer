@@ -1,6 +1,8 @@
 package net.meloli.demo.sys.config;
 
+import com.netflix.discovery.converters.Auto;
 import net.meloli.demo.sys.util.MvcDataDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
@@ -24,6 +26,7 @@ public class ReturnValueHandler implements HandlerMethodReturnValueHandler {
         // 直接返回MvcDataDto
         if (returnValue instanceof MvcDataDto) {
             handlerMethodReturnValueHandler.handleReturnValue(returnValue, methodParameter, modelAndViewContainer, nativeWebRequest);
+            return;
         }
 
         MvcDataDto data = MvcDataDto.getInstance();
