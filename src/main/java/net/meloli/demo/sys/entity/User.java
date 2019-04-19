@@ -3,14 +3,15 @@ package net.meloli.demo.sys.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-public class SysUser implements Serializable {
+public class User implements Serializable {
 
     private Integer id;         // 用户ID
     private String userName;    // 用户名
+    private String userEmail;   // 用户邮箱
     private String userPassword;// 用户密码
     private String userNickName;// 用户昵称
     private String userHeadPic; // 用户头像
-    private Integer userSex;    // 用户性别
+    private Boolean userSex;    // 用户性别
     private String userPhone;   // 用户手机号
     private Date createDate;    // 用户创建时间
     private Date lastLoginDate; // 用户最后登陆时间
@@ -55,11 +56,11 @@ public class SysUser implements Serializable {
         this.userHeadPic = userHeadPic;
     }
 
-    public Integer getUserSex() {
+    public Boolean getUserSex() {
         return userSex;
     }
 
-    public void setUserSex(Integer userSex) {
+    public void setUserSex(Boolean userSex) {
         this.userSex = userSex;
     }
 
@@ -85,5 +86,13 @@ public class SysUser implements Serializable {
 
     public void setLastLoginDate(Date lastLoginDate) {
         this.lastLoginDate = lastLoginDate;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 }
