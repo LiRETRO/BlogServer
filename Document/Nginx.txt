@@ -32,8 +32,8 @@ source /etc/profile
 Nginx 反向代理配置模板
 # 在 http 节点下添加
 server {
-    listen: 80 // 监听80端口
-    server_name: www.meloli.net // 转发到指定地址：端口
+    listen 80; // 监听80端口
+    server_name www.meloli.net; // 转发到指定地址：端口
     location / {
         root html;
         index index.html index.html;
