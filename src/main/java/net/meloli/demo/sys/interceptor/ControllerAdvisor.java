@@ -1,7 +1,6 @@
 package net.meloli.demo.sys.interceptor;
 
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -18,16 +17,16 @@ public class ControllerAdvisor {
      * 切入Controller包下所有类的所有方法
      */
     @Pointcut("execution(* *..*controller*..*(..))")
-    public void pointCut() {}
+    public void pointCut() {
+    }
 
     @Around("pointCut()")
-    public Object around(ProceedingJoinPoint joinPoint) {
+    public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
             return joinPoint.proceed();
         } catch (Throwable throwable) {
-            throwable.printStackTrace();
+            throw throwable;
         }
-        return null;
     }
 
 
