@@ -16,6 +16,7 @@ public class ControllerAdvisor {
      * 切入点
      * 切入Controller包下所有类的所有方法
      */
+//    @Pointcut("execution(* *..*controller*..*(..)) && within(*..*ob.controller*..*)") 切入点controller包下所有方法，并且只切入ob包下的controller
     @Pointcut("execution(* *..*controller*..*(..))")
     public void pointCut() {
     }
