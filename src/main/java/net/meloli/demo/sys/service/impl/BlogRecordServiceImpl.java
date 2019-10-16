@@ -19,6 +19,7 @@ public class BlogRecordServiceImpl implements IBlogRecordService {
     @Autowired
     MongoTemplate mongoTemplate;
 
+
     /**
      * 保存博客访问记录
      *
@@ -36,11 +37,13 @@ public class BlogRecordServiceImpl implements IBlogRecordService {
         blogRecord.setVisitTime(visitDto.getRequestTime());
         Query query = new Query();
         query.addCriteria(Criteria.where("blogId").is(visitDto.getBlogId()));
-        Blog detail = mongoTemplate.findOne(query, Blog.class);
-        Long blogVisitedCount = detail.getBlogVisitedCount() == null ? 0 : detail.getBlogVisitedCount();
-        Update update = Update.update("blogVisitedCount", blogVisitedCount + 1);
-        mongoTemplate.save(blogRecord, MongoDBUtils.CollectionName.BLOG_RECORD);
-        mongoTemplate.updateFirst(query, update, MongoDBUtils.CollectionName.BLOG);
+        synchronized (visitDto.getBlogId()) {
+            Blog detail = mongoTemplate.findOne(query, Blog.class);
+            Long blogVisitedCount = detail.getBlogVisitedCount() == null ? 0 : detail.getBlogVisitedCount();
+            Update update = Update.update("blogVisitedCount", blogVisitedCount + 1);
+            mongoTemplate.save(blogRecord, MongoDBUtils.CollectionName.BLOG_RECORD);
+            mongoTemplate.updateFirst(query, update, MongoDBUtils.CollectionName.BLOG);
+        }
         return true;
     }
 }
