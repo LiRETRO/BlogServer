@@ -37,7 +37,7 @@ public class BlogRecordServiceImpl implements IBlogRecordService {
         blogRecord.setVisitTime(visitDto.getRequestTime());
         Query query = new Query();
         query.addCriteria(Criteria.where("blogId").is(visitDto.getBlogId()));
-        synchronized (visitDto.getBlogId()) {
+        synchronized (visitDto.getBlogId().intern()) {
             Blog detail = mongoTemplate.findOne(query, Blog.class);
             Long blogVisitedCount = detail.getBlogVisitedCount() == null ? 0 : detail.getBlogVisitedCount();
             Update update = Update.update("blogVisitedCount", blogVisitedCount + 1);
