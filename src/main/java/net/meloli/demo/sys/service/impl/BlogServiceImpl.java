@@ -1,6 +1,8 @@
 package net.meloli.demo.sys.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.netflix.discovery.converters.Auto;
+import net.meloli.demo.sys.base.SpringContext;
 import net.meloli.demo.sys.dto.VisitDto;
 import net.meloli.demo.sys.entity.Blog;
 import net.meloli.demo.sys.mongodb.util.MongoDBUtils;
@@ -19,6 +21,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -29,10 +32,13 @@ import java.util.stream.Collectors;
 public class BlogServiceImpl implements IBlogService {
 
     @Autowired
-    MongoOperations mongoTemplate;
+    MongoTemplate mongoTemplate;
 
     @Autowired
     IProducerService iProducerService;
+
+    @Autowired
+    HttpServletRequest servletRequest;
 
     /**
      * 获取博客列表
@@ -95,7 +101,8 @@ public class BlogServiceImpl implements IBlogService {
         Long blogVisitedCount = detail.getBlogVisitedCount() == null ? 0L : detail.getBlogVisitedCount();
         detail.setBlogVisitedCount(blogVisitedCount + 1);
         // 新增一条访问记录, 并推送到消息队列
-        VisitDto visitDto = new VisitDto(id, new Date());
+        String ip = servletRequest.getRemoteAddr();
+        VisitDto visitDto = new VisitDto(id, new Date(), ip);
         iProducerService.send(RabbitMQConfig.QUEUE, JSON.toJSONString(visitDto));
         data.setResultObj(detail);
         data.setResultCode(MvcDataDto.SUCCESS);

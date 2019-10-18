@@ -31,10 +31,15 @@ public class BlogRecordServiceImpl implements IBlogRecordService {
         if (visitDto == null || "".equals(visitDto.getBlogId())) {
             return false;
         }
+        BlogRecord record = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("visitIp").is(visitDto.getIpAddr())), BlogRecord.class);
+        if (record != null) {
+            return false;
+        }
         BlogRecord blogRecord = new BlogRecord();
         blogRecord.setRecordId(IdWorker.getDateId());
         blogRecord.setBlogId(visitDto.getBlogId());
         blogRecord.setVisitTime(visitDto.getRequestTime());
+        blogRecord.setVisitIp(visitDto.getIpAddr());
         Query query = new Query();
         query.addCriteria(Criteria.where("blogId").is(visitDto.getBlogId()));
         synchronized (visitDto.getBlogId().intern()) {
