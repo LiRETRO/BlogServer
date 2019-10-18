@@ -12,6 +12,7 @@ import net.meloli.demo.sys.util.MvcDataDto;
 import net.meloli.demo.sys.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
 public class BlogServiceImpl implements IBlogService {
 
     @Autowired
-    MongoTemplate mongoTemplate;
+    MongoOperations mongoTemplate;
 
     @Autowired
     IProducerService iProducerService;

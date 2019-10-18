@@ -7,18 +7,22 @@ spring:
   # 数据库连接配置
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: "jdbc:mysql://120.79.153.123:3306/demo"
+    url: "jdbc:mysql://106.15.72.196:3306/demo"
     username: "root"
     password: "retroLiA1."
   data:
     # MongoDB配置
     mongodb:
-      database: "project"
-      host: "148.70.10.229"
+      database: "blog"
+      host: "106.15.72.196"
       port: 27017
+      authentication-database: "blog"
+      username: blogmanager
+      password: 123456
+
   # rabbitMQ配置
   rabbitmq:
-    host: "148.70.10.229"
+    host: "106.15.72.196"
     port: 5672
     username: "blogmanager"
     password: "123456"
