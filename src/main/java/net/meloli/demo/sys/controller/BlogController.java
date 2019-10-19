@@ -8,6 +8,7 @@ import net.meloli.demo.sys.rabbitmq.config.RabbitMQConfig;
 import net.meloli.demo.sys.rabbitmq.service.IProducerService;
 import net.meloli.demo.sys.service.inf.IBlogService;
 import net.meloli.demo.sys.util.MvcDataDto;
+import net.meloli.demo.sys.util.RedisHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,25 @@ public class BlogController extends BaseController {
         for(int i = 0, len = 10; i < len; ++i ) {
             iProducerService.send(RabbitMQConfig.TEST_QUEUE, "测试RabbitMQ消息，这是第" + (i + 1) + "条");
         }
+    }
+
+    @ApiOperation(value = "Redis写入测试", notes = "Redis写入测试中")
+    @GetMapping(value = "/redisWriteTest")
+    public void redisWriteTest() throws Exception {
+        RedisHelper.setStringsValue("name", "李天吉");
+    }
+
+    @ApiOperation(value = "Redis读取测试", notes = "Redis读取测试中")
+    @GetMapping(value = "/redisReadTest")
+    public void redisReadTest() throws Exception {
+        String name = RedisHelper.getStringsValue("name");
+        System.out.println(name);
+    }
+
+    @ApiOperation(value = "Redis删除测试", notes = "Redis删除测试中")
+    @DeleteMapping(value = "/redisDelTest")
+    public void redisDelTest() throws Exception {
+        RedisHelper.delKey("name");
     }
 
     @ApiOperation(value = "异常测试", notes = "异常测试中")

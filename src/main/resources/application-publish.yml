@@ -22,6 +22,17 @@ spring:
     port: 5672
     username: "blogmanager"
     password: "123456"
+  # Redis配置
+  redis:
+    host: 106.15.72.196
+    port: 26379
+    timeout: 50
+    password: blogbadass
+    jedis:
+      pool:
+        max-idle: 10
+        max-wait: -1
+        max-active: 10
 
 # 配置hystrix防护机制
 hystrix:
