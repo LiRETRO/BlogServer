@@ -55,7 +55,8 @@ public class TestController {
     @GetMapping(value = "/hystrixTest")
     @HystrixCommand(fallbackMethod = "defaultFallbackMethod")
     public String hystrixTest() throws Exception {
-        Thread.sleep(1000);
+//        throw new Exception("异常是否触发断路");
+        Thread.sleep(20);
         return "成功！";
     }
 

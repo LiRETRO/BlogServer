@@ -45,7 +45,7 @@ hystrix:
       execution:
         isolation:
           thread:
-            timeoutInMillisecond: 3000
+            timeoutInMilliseconds: 50
 
 eureka:
   instance:

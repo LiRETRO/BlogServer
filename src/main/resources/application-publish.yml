@@ -41,7 +41,7 @@ hystrix:
       execution:
         isolation:
           thread:
-            timeoutInMillisecond: 3000
+            timeoutInMilliseconds: 3000
 eureka:
   instance:
     prefer-ip-address: true
