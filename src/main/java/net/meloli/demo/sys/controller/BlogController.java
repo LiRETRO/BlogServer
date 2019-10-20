@@ -33,7 +33,7 @@ public class BlogController extends BaseController {
     }
 
     @ApiOperation(value = "Redis写入测试", notes = "Redis写入测试中")
-    @GetMapping(value = "/redisWriteTest")
+    @PutMapping(value = "/redisWriteTest")
     public void redisWriteTest() throws Exception {
         RedisHelper.setStringsValue("name", "李天吉");
     }
