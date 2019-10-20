@@ -20,43 +20,6 @@ public class BlogController extends BaseController {
     @Autowired
     IBlogService iBlogService;
 
-    @Autowired
-    IProducerService iProducerService;
-
-    @ApiOperation(value = "发送RbbitMQ消息测试", notes = "发送RabbitMQ消息测试")
-    @GetMapping(value = "/sendMsgTest")
-    public void sendMsgTest() {
-        // 循环发送消息，测试接收者是否可以接收到
-        for(int i = 0, len = 10; i < len; ++i ) {
-            iProducerService.send(RabbitMQConfig.TEST_QUEUE, "测试RabbitMQ消息，这是第" + (i + 1) + "条");
-        }
-    }
-
-    @ApiOperation(value = "Redis写入测试", notes = "Redis写入测试中")
-    @PutMapping(value = "/redisWriteTest")
-    public void redisWriteTest() throws Exception {
-        RedisHelper.setStringsValue("name", "李天吉");
-    }
-
-    @ApiOperation(value = "Redis读取测试", notes = "Redis读取测试中")
-    @GetMapping(value = "/redisReadTest")
-    public void redisReadTest() throws Exception {
-        String name = RedisHelper.getStringsValue("name");
-        System.out.println(name);
-    }
-
-    @ApiOperation(value = "Redis删除测试", notes = "Redis删除测试中")
-    @DeleteMapping(value = "/redisDelTest")
-    public void redisDelTest() throws Exception {
-        RedisHelper.delKey("name");
-    }
-
-    @ApiOperation(value = "异常测试", notes = "异常测试中")
-    @GetMapping(value = "/exceptionTest")
-    public void exceptionTest() throws Exception {
-        throw new Exception("异常测试");
-    }
-
     @ApiOperation(value = "获取博客List", notes = "获取博客List")
     @PostMapping(value = "/getBlogList", consumes = "application/json")
     public Object getBlogList(@RequestBody MvcDataDto param) {
