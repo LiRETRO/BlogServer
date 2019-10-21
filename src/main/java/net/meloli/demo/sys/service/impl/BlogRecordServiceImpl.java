@@ -31,7 +31,7 @@ public class BlogRecordServiceImpl implements IBlogRecordService {
         if (visitDto == null || "".equals(visitDto.getBlogId())) {
             return false;
         }
-        BlogRecord record = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("visitIp").is(visitDto.getIpAddr())), BlogRecord.class);
+        BlogRecord record = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("visitIp").is(visitDto.getIpAddr())), BlogRecord.class, MongoDBUtils.CollectionName.BLOG_RECORD);
         if (record != null) {
             return false;
         }

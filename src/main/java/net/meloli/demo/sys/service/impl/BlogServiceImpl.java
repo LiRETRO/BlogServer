@@ -10,6 +10,7 @@ import net.meloli.demo.sys.rabbitmq.config.RabbitMQConfig;
 import net.meloli.demo.sys.rabbitmq.service.IProducerService;
 import net.meloli.demo.sys.service.inf.IBlogService;
 import net.meloli.demo.sys.util.IdWorker;
+import net.meloli.demo.sys.util.IpUtils;
 import net.meloli.demo.sys.util.MvcDataDto;
 import net.meloli.demo.sys.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,11 +99,7 @@ public class BlogServiceImpl implements IBlogService {
         Query query = new Query();
         query.addCriteria(Criteria.where("blogId").is(id));
         Blog detail = mongoTemplate.findOne(query, Blog.class, MongoDBUtils.CollectionName.BLOG);
-        Long blogVisitedCount = detail.getBlogVisitedCount() == null ? 0L : detail.getBlogVisitedCount();
-        detail.setBlogVisitedCount(blogVisitedCount + 1);
-        // 新增一条访问记录, 并推送到消息队列
-        String ip = servletRequest.getRemoteAddr();
-        VisitDto visitDto = new VisitDto(id, new Date(), ip);
+        VisitDto visitDto = new VisitDto(id, new Date(), IpUtils.getRemoteIp(servletRequest));
         iProducerService.send(RabbitMQConfig.QUEUE, JSON.toJSONString(visitDto));
         data.setResultObj(detail);
         data.setResultCode(MvcDataDto.SUCCESS);

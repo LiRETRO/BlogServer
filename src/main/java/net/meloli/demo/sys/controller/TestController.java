@@ -34,9 +34,9 @@ public class TestController {
 
     @ApiOperation(value = "Redis读取测试", notes = "Redis读取测试中")
     @GetMapping(value = "/redisReadTest")
-    public void redisReadTest() throws Exception {
+    public String redisReadTest() throws Exception {
         String name = RedisHelper.getStringsValue("name");
-        System.out.println(name);
+        return name;
     }
 
     @ApiOperation(value = "Redis删除测试", notes = "Redis删除测试中")
