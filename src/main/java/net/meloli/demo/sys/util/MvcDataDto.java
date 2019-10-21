@@ -1,5 +1,7 @@
 package net.meloli.demo.sys.util;
 
+import org.springframework.http.HttpStatus;
+
 import java.io.Serializable;
 
 public class MvcDataDto<T> implements Serializable {
@@ -13,38 +15,38 @@ public class MvcDataDto<T> implements Serializable {
 
     public static MvcDataDto getInstance() {
         synchronized (MvcDataDto.class) {
-            return new MvcDataDto().setResultCode(MvcDataDto.FAIL);
+            return new MvcDataDto().setCode(HttpStatus.PRECONDITION_FAILED.value());
         }
     }
 
     // 返回代码
-    private String resultCode;
+    private Integer code;
     // 返回消息
-    private String resultMessage;
+    private String message;
     // 翻页对象
     private Page page;
     // 返回结果
-    private T resultObj;
+    private T data;
     // 返回参数
     private Object param;
     // 返回结果冗余
     private Object resultObjMore;
 
-    public String getResultCode() {
-        return resultCode;
+    public Integer getCode() {
+        return code;
     }
 
-    public MvcDataDto setResultCode(String resultCode) {
-        this.resultCode = resultCode;
+    public MvcDataDto setCode(Integer code) {
+        this.code = code;
         return this;
     }
 
-    public String getResultMessage() {
-        return resultMessage;
+    public String getMessage() {
+        return message;
     }
 
-    public MvcDataDto setResultMessage(String resultMessage) {
-        this.resultMessage = resultMessage;
+    public MvcDataDto setMessage(String message) {
+        this.message = message;
         return this;
     }
 
@@ -57,12 +59,12 @@ public class MvcDataDto<T> implements Serializable {
         return this;
     }
 
-    public T getResultObj() {
-        return resultObj;
+    public T getData() {
+        return data;
     }
 
-    public MvcDataDto setResultObj(T resultObj) {
-        this.resultObj = resultObj;
+    public MvcDataDto setData(T data) {
+        this.data = data;
         return this;
     }
 

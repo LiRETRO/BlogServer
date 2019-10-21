@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public MvcDataDto exceptionHandler(Exception ex) {
         MvcDataDto result = MvcDataDto.getInstance();
-        result.setResultMessage("方法异常：" + ex.getMessage());
+        result.setMessage("方法异常：" + ex.getMessage());
         // 打印日志
         logger.error("******************************** " + dateFormat.format(new Date()) + " 异常开始 ********************************");
         // 将异常保存进Mongodb

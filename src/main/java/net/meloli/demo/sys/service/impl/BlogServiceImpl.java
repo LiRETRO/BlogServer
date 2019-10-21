@@ -1,8 +1,6 @@
 package net.meloli.demo.sys.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.netflix.discovery.converters.Auto;
-import net.meloli.demo.sys.base.SpringContext;
 import net.meloli.demo.sys.dto.VisitDto;
 import net.meloli.demo.sys.entity.Blog;
 import net.meloli.demo.sys.mongodb.util.MongoDBUtils;
@@ -15,17 +13,16 @@ import net.meloli.demo.sys.util.MvcDataDto;
 import net.meloli.demo.sys.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service("blogService")
@@ -63,8 +60,8 @@ public class BlogServiceImpl implements IBlogService {
                     .peek(item -> item.setBlogContent(item.getBlogContent().replaceAll("<[^>]*>", "")))
                     .collect(Collectors.toList());
             data.setPage(page);
-            data.setResultObj(blogList);
-            data.setResultCode(MvcDataDto.SUCCESS);
+            data.setData(blogList);
+            data.setCode(HttpStatus.OK.value());
         }
         return data;
     }
@@ -84,8 +81,8 @@ public class BlogServiceImpl implements IBlogService {
         blog.setBlogPublisher("LiRETRO");
         blog.setBlogPublisherCode("");
         mongoTemplate.save(blog, MongoDBUtils.CollectionName.BLOG);
-        data.setResultCode(MvcDataDto.SUCCESS);
-        data.setResultMessage("发布博客成功！");
+        data.setCode(HttpStatus.OK.value());
+        data.setMessage("发布博客成功！");
         return data;
     }
 
@@ -101,8 +98,8 @@ public class BlogServiceImpl implements IBlogService {
         Blog detail = mongoTemplate.findOne(query, Blog.class, MongoDBUtils.CollectionName.BLOG);
         VisitDto visitDto = new VisitDto(id, new Date(), IpUtils.getRemoteIp(servletRequest));
         iProducerService.send(RabbitMQConfig.QUEUE, JSON.toJSONString(visitDto));
-        data.setResultObj(detail);
-        data.setResultCode(MvcDataDto.SUCCESS);
+        data.setData(detail);
+        data.setCode(HttpStatus.OK.value());
         return data;
     }
 
@@ -117,8 +114,8 @@ public class BlogServiceImpl implements IBlogService {
         Query query = new Query();
         query.addCriteria(Criteria.where("blogId").is(blogId));
         mongoTemplate.remove(query, MongoDBUtils.CollectionName.BLOG);
-        data.setResultCode(MvcDataDto.SUCCESS);
-        data.setResultMessage("删除成功！");
+        data.setCode(HttpStatus.OK.value());
+        data.setMessage("删除成功！");
         return data;
     }
 }
