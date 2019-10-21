@@ -53,14 +53,9 @@ public class TestController {
 
     @ApiOperation(value = "断路器测试", notes = "断路器测试中")
     @GetMapping(value = "/hystrixTest")
-    @HystrixCommand(fallbackMethod = "defaultFallbackMethod")
     public String hystrixTest() throws Exception {
 //        throw new Exception("异常是否触发断路");
-        Thread.sleep(20);
+        Thread.sleep(11000);
         return "成功！";
-    }
-
-    public String defaultFallbackMethod() throws Exception {
-        return "断路器打开！";
     }
 }
