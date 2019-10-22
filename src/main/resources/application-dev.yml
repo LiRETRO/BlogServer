@@ -9,7 +9,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: "jdbc:mysql://106.15.72.196:3306/demo"
     username: "root"
-    password: "retroLiA1."
+    password: "123456"
   data:
     # MongoDB配置
     mongodb:
