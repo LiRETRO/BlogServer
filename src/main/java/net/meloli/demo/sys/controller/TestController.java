@@ -9,6 +9,9 @@ import net.meloli.demo.sys.util.RedisHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 @Api(description = "测试Controller", tags = "TestController")
 @RestController("sysTestController")
 @RequestMapping("/test")
@@ -57,5 +60,17 @@ public class TestController {
 //        throw new Exception("异常是否触发断路");
         Thread.sleep(11000);
         return "成功！";
+    }
+
+    @ApiOperation(value = "Zipkin链路追踪测试", notes = "Zipkin链路追踪测试中")
+    @GetMapping(value = "/zipkinTest")
+    public void zipkinTest() throws Exception {
+        URL url = new URL("http://localhost:8000/test/redisWriteTest");
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.setDoOutput(true);
+        urlConnection.setDoInput(true);
+        urlConnection.setRequestMethod("GET");
+        urlConnection.getInputStream();
+        urlConnection.disconnect();
     }
 }
