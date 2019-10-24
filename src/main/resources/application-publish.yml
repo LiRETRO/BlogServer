@@ -2,30 +2,31 @@ server:
   # 端口配置
   port: 8000
 spring:
-  # 发布profile
-  profiles: "publish"
+  # 开发profile
+  profiles: "dev"
   # 数据库连接配置
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: "jdbc:mysql://120.79.153.123:3306/demo"
-    username: "root"
-    password: "retroLiA1."
+    url: "jdbc:mysql://172.17.28.71:3306/blog"
+    username: "blogmanager"
+    password: "123456"
   data:
     # MongoDB配置
     mongodb:
-      database: "project"
-      host: "172.27.0.5"
+      database: "blog"
+      host: "172.17.28.71"
       port: 27017
+      authentication-database: "blog"
+      username: "blogmanager"
+      password: "123456"
   # rabbitMQ配置
   rabbitmq:
-    host: "172.27.0.5"
+    host: "172.17.28.71"
     port: 5672
     username: "blogmanager"
     password: "123456"
   # Redis配置
   redis:
-    host: 106.15.72.196
-    port: 26379
     timeout: 50
     password: blogbadass
     jedis:
@@ -33,13 +34,16 @@ spring:
         max-idle: 10
         max-wait: -1
         max-active: 10
+    sentinel:
+      master: blogmaster
+      nodes: 172.17.28.71:26379
   # Zipkin配置
   zipkin:
     # 打开服务发现
     locator:
       discovery:
         enabled: true
-    base-url: http://localhost:9411/
+    base-url: http://172.17.28.71:9411/
   # sleuth配置
   sleuth:
     sampler:
@@ -52,14 +56,11 @@ hystrix:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 3000
+            timeoutInMilliseconds: 50
+
 eureka:
   instance:
     prefer-ip-address: true
-    hostname: 148.70.10.229
-    instance-id: ${spring.application.name}:${server.port}
-    # 设置IP地址
-    ip-address: 148.70.10.229
   client:
     service-url:
-      defaultZone: http://blogmanager:123456@47.101.201.93:10237/eureka/
+      defaultZone: http://blogmanager:123456@master:10237/eureka/
