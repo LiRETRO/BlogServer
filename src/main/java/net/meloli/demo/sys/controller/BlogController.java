@@ -38,6 +38,12 @@ public class BlogController extends BaseController {
         return iBlogService.getBlogDetail(blogId);
     }
 
+    @ApiOperation(value = "获取上/下一条博客", notes = "通过当前博客Id获取上/下一条博客")
+    @GetMapping(value = "/getBlogPrevAndNext/{blogId}")
+    public Object getBlogPrevAndNext(@PathVariable String blogId) {
+        return iBlogService.getBlogPrevAndNext(blogId);
+    }
+
     @ApiOperation(value = "删除博客", notes = "删除博客")
     @DeleteMapping(value = "/deleteBlog/{blogId}")
     public Object deleteBlog(@PathVariable String blogId) {

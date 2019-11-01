@@ -1,6 +1,7 @@
 package net.meloli.demo.sys.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import net.meloli.demo.sys.dto.BlogPrevAndNextDTO;
 import net.meloli.demo.sys.dto.VisitDto;
 import net.meloli.demo.sys.entity.Blog;
 import net.meloli.demo.sys.mongodb.util.MongoDBUtils;
@@ -26,7 +27,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service("blogService")
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class BlogServiceImpl implements IBlogService {
 
     @Autowired
@@ -116,6 +117,32 @@ public class BlogServiceImpl implements IBlogService {
         mongoTemplate.remove(query, MongoDBUtils.CollectionName.BLOG);
         data.setCode(HttpStatus.OK.value());
         data.setMessage("删除成功！");
+        return data;
+    }
+
+    /**
+     * 通过当前博客的Id获取上/下一条博客
+     *
+     * @param blogId
+     * @return
+     */
+    @Override
+    public MvcDataDto<BlogPrevAndNextDTO> getBlogPrevAndNext(String blogId) {
+        MvcDataDto<BlogPrevAndNextDTO> data = MvcDataDto.getInstance();
+        BlogPrevAndNextDTO blogPrevAndNextDTO = new BlogPrevAndNextDTO();
+        // 上一条
+        Query lastOne = new Query();
+        lastOne.addCriteria(Criteria.where("blogId").lt(blogId)).with(new Sort(Sort.Direction.DESC, "blogId")).limit(1);
+        Blog lastOneBlog = mongoTemplate.findOne(lastOne, Blog.class, MongoDBUtils.CollectionName.BLOG);
+        blogPrevAndNextDTO.setPrev(lastOneBlog);
+        // 下一条
+        Query nextOne = new Query();
+        nextOne.addCriteria(Criteria.where("blogId").gt(blogId)).with(new Sort(Sort.Direction.ASC, "blogId")).limit(1);
+        Blog nextOneBlog = mongoTemplate.findOne(nextOne, Blog.class, MongoDBUtils.CollectionName.BLOG);
+        blogPrevAndNextDTO.setNext(nextOneBlog);
+        data.setCode(HttpStatus.OK.value());
+        data.setMessage("成功");
+        data.setData(blogPrevAndNextDTO);
         return data;
     }
 }

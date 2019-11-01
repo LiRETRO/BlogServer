@@ -1,5 +1,6 @@
 package net.meloli.demo.sys.service.inf;
 
+import net.meloli.demo.sys.dto.BlogPrevAndNextDTO;
 import net.meloli.demo.sys.entity.Blog;
 import net.meloli.demo.sys.util.MvcDataDto;
 
@@ -32,4 +33,11 @@ public interface IBlogService {
      * @return
      */
     MvcDataDto deleteBlog(String blogId);
+
+    /**
+     * 通过当前博客的Id获取上/下一条博客
+     * @param blogId
+     * @return
+     */
+    MvcDataDto<BlogPrevAndNextDTO> getBlogPrevAndNext(String blogId);
 }

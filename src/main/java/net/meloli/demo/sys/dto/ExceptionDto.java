@@ -1,8 +1,11 @@
 package net.meloli.demo.sys.dto;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 
+@Data
 public class ExceptionDto implements Serializable {
 
     // 异常ID
@@ -16,43 +19,4 @@ public class ExceptionDto implements Serializable {
     // 异常发生链
     private String exceptionChain;
 
-    public String getExceptionId() {
-        return exceptionId;
-    }
-
-    public void setExceptionId(String exceptionId) {
-        this.exceptionId = exceptionId;
-    }
-
-    public String getExceptionMsg() {
-        return exceptionMsg;
-    }
-
-    public void setExceptionMsg(String exceptionMsg) {
-        this.exceptionMsg = exceptionMsg;
-    }
-
-    public String getExceptionMsgDetail() {
-        return exceptionMsgDetail;
-    }
-
-    public void setExceptionMsgDetail(String exceptionMsgDetail) {
-        this.exceptionMsgDetail = exceptionMsgDetail;
-    }
-
-    public Date getExceptionTime() {
-        return exceptionTime;
-    }
-
-    public void setExceptionTime(Date exceptionTime) {
-        this.exceptionTime = exceptionTime;
-    }
-
-    public String getExceptionChain() {
-        return exceptionChain;
-    }
-
-    public void setExceptionChain(String exceptionChain) {
-        this.exceptionChain = exceptionChain;
-    }
 }

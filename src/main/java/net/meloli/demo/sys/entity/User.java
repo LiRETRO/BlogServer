@@ -1,8 +1,10 @@
 package net.meloli.demo.sys.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
-
+@Data
 public class User implements Serializable {
 
     private Integer id;         // 用户ID
@@ -15,84 +17,4 @@ public class User implements Serializable {
     private String userPhone;   // 用户手机号
     private Date createDate;    // 用户创建时间
     private Date lastLoginDate; // 用户最后登陆时间
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getUserPassword() {
-        return userPassword;
-    }
-
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
-    }
-
-    public String getUserNickName() {
-        return userNickName;
-    }
-
-    public void setUserNickName(String userNickName) {
-        this.userNickName = userNickName;
-    }
-
-    public String getUserHeadPic() {
-        return userHeadPic;
-    }
-
-    public void setUserHeadPic(String userHeadPic) {
-        this.userHeadPic = userHeadPic;
-    }
-
-    public Boolean getUserSex() {
-        return userSex;
-    }
-
-    public void setUserSex(Boolean userSex) {
-        this.userSex = userSex;
-    }
-
-    public String getUserPhone() {
-        return userPhone;
-    }
-
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Date getLastLoginDate() {
-        return lastLoginDate;
-    }
-
-    public void setLastLoginDate(Date lastLoginDate) {
-        this.lastLoginDate = lastLoginDate;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
 }

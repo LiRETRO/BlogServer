@@ -1,7 +1,14 @@
 package net.meloli.demo.sys.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.Date;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class VisitDto {
     // blogId
     private String blogId;
@@ -9,36 +16,4 @@ public class VisitDto {
     private Date requestTime;
     // 请求IP
     private String ipAddr;
-
-    public VisitDto() {}
-
-    public VisitDto(String blogId, Date requestTime, String ipAddr) {
-        this.blogId = blogId;
-        this.requestTime = requestTime;
-        this.ipAddr = ipAddr;
-    }
-
-    public String getBlogId() {
-        return blogId;
-    }
-
-    public void setBlogId(String blogId) {
-        this.blogId = blogId;
-    }
-
-    public Date getRequestTime() {
-        return requestTime;
-    }
-
-    public void setRequestTime(Date requestTime) {
-        this.requestTime = requestTime;
-    }
-
-    public String getIpAddr() {
-        return ipAddr;
-    }
-
-    public void setIpAddr(String ipAddr) {
-        this.ipAddr = ipAddr;
-    }
 }
