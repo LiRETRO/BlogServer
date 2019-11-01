@@ -5,11 +5,13 @@ import net.meloli.demo.sys.entity.Blog;
 import net.meloli.demo.sys.mongodb.util.MongoDBUtils;
 import net.meloli.demo.sys.rabbitmq.config.RabbitMQConfig;
 import net.meloli.demo.sys.rabbitmq.service.IProducerService;
+import net.meloli.demo.sys.util.IdWorker;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -18,6 +20,8 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -60,5 +64,16 @@ public class DemoApplicationTests {
             iProducerService.send(RabbitMQConfig.QUEUE, "测试RabbitMQ消息，这是第" + (i + 1) + "条");
         }
     }*/
+
+    @Test
+    public void idWorkerTest() {
+        Logger logger = Logger.getLogger(this.getClass().getSimpleName());
+        logger.log(Level.INFO, "普通Date测试");
+        logger.log(Level.INFO, IdWorker.getDateId());
+        logger.log(Level.INFO, "Id测试");
+        logger.log(Level.INFO, IdWorker.getId());
+        logger.log(Level.INFO, "FullDate测试");
+        logger.log(Level.INFO, IdWorker.getFullDateId());
+    }
 
 }

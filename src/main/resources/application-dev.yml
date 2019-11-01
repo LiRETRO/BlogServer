@@ -49,6 +49,12 @@ spring:
     sampler:
       # 采样比例为100%，默认为10%
       probability: 1.0
+# MyBatis
+mybatis:
+  # 指定包下的Entity设置别名（默认为ClassName）
+  type-aliases-package: net.meloli.demo.sys.entity;net.meloli.demo.sys.dto;
+  # 指定Mapper的地址
+  mapper-locations: classpath:mapper/*.xml
 # 配置hystrix防护机制
 hystrix:
   command:

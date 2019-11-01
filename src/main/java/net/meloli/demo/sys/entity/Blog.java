@@ -26,4 +26,6 @@ public class Blog implements Serializable {
     private Boolean blogIsDel;
     // 冗余 图片地址数组
     private String blogImgPathArr;
+    // 文章最后编辑时间
+    private Date blogLastPublisherDate;
 }
