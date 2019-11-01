@@ -1,11 +1,17 @@
 package net.meloli.demo;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.netflix.discovery.converters.Auto;
 import net.meloli.demo.sys.controller.BlogController;
 import net.meloli.demo.sys.entity.Blog;
+import net.meloli.demo.sys.entity.Tag;
+import net.meloli.demo.sys.mapper.ITagsMapper;
 import net.meloli.demo.sys.mongodb.util.MongoDBUtils;
 import net.meloli.demo.sys.rabbitmq.config.RabbitMQConfig;
 import net.meloli.demo.sys.rabbitmq.service.IProducerService;
 import net.meloli.demo.sys.util.IdWorker;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +26,7 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -74,6 +81,17 @@ public class DemoApplicationTests {
         logger.log(Level.INFO, IdWorker.getId());
         logger.log(Level.INFO, "FullDate测试");
         logger.log(Level.INFO, IdWorker.getFullDateId());
+    }
+
+    @Autowired
+    ITagsMapper tagsMapper;
+
+    @Test
+    public void myBatisTest() {
+        PageHelper.startPage(1, 5);
+        List<Tag> list = tagsMapper.getTags();
+        PageInfo<Tag> pageInfo = new PageInfo<>(list);
+        Assert.assertEquals(pageInfo.getTotal(), 0);
     }
 
 }

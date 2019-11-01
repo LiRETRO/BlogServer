@@ -122,13 +122,13 @@
             <version>1.18.10</version>
             <scope>provided</scope>
         </dependency>
-        <!-- MyBatis Spring https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter -->
+        <!--    MyBatis Page Helper    -->
+        <!--    包含mybatis-spring-boot-starter    -->
         <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>2.1.1</version>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>1.2.12</version>
         </dependency>
-
     </dependencies>
 
     <dependencyManagement>

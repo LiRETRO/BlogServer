@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.ServletRequest;
 
-@Api(tags = "UserController")
+@Api(tags = "用户Controller")
 @RequestMapping("/api/user")
 @RestController
 public class UserController extends BaseController {

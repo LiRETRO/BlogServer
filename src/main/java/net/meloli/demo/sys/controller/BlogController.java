@@ -12,7 +12,7 @@ import net.meloli.demo.sys.util.RedisHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@Api(description = "博客接口", tags = "BlogController")
+@Api(tags = "博客Controller")
 @RestController
 @RequestMapping("/api/blog")
 public class BlogController extends BaseController {

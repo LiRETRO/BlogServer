@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-@Api(description = "测试Controller", tags = "TestController")
+@Api(tags = "测试Controller")
 @RestController("sysTestController")
 @RequestMapping("/test")
 public class TestController {
