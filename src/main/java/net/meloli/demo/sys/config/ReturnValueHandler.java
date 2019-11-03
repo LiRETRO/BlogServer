@@ -36,6 +36,6 @@ public class ReturnValueHandler implements HandlerMethodReturnValueHandler {
         }
         data.setCode(HttpStatus.OK.value());
         data.setMessage("成功");
-        handlerMethodReturnValueHandler.handleReturnValue(returnValue, methodParameter, modelAndViewContainer, nativeWebRequest);
+        handlerMethodReturnValueHandler.handleReturnValue(data, methodParameter, modelAndViewContainer, nativeWebRequest);
     }
 }

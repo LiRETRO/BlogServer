@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Api(tags = "标签接口")
 @RestController
-@RequestMapping("/api/blog")
+@RequestMapping("/api/tags")
 public class TagsController extends BaseController {
 
     @Autowired
