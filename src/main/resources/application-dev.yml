@@ -38,17 +38,17 @@ spring:
       master: blogmaster
       nodes: 106.15.72.196:26379
   # Zipkin配置
-  zipkin:
-    # 打开服务发现
-    locator:
-      discovery:
-        enabled: true
-    base-url: http://localhost:9411/
-  # sleuth配置
-  sleuth:
-    sampler:
-      # 采样比例为100%，默认为10%
-      probability: 1.0
+#  zipkin:
+#    # 打开服务发现
+#    locator:
+#      discovery:
+#        enabled: true
+#    base-url: http://localhost:9411/
+#  # sleuth配置
+#  sleuth:
+#    sampler:
+#      # 采样比例为100%，默认为10%
+#      probability: 1.0
 # MyBatis
 mybatis:
   # 指定包下的Entity设置别名（默认为ClassName）
@@ -64,9 +64,9 @@ hystrix:
           thread:
             timeoutInMilliseconds: 50
 
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    service-url:
-      defaultZone: http://blogmanager:123456@master:10237/eureka/
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#  client:
+#    service-url:
+#      defaultZone: http://blogmanager:123456@master:10237/eureka/

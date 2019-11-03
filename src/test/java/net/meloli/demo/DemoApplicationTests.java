@@ -10,6 +10,7 @@ import net.meloli.demo.sys.mapper.ITagsMapper;
 import net.meloli.demo.sys.mongodb.util.MongoDBUtils;
 import net.meloli.demo.sys.rabbitmq.config.RabbitMQConfig;
 import net.meloli.demo.sys.rabbitmq.service.IProducerService;
+import net.meloli.demo.sys.service.inf.ITagsService;
 import net.meloli.demo.sys.util.IdWorker;
 import org.junit.Assert;
 import org.junit.Before;
@@ -25,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -92,6 +94,17 @@ public class DemoApplicationTests {
         List<Tag> list = tagsMapper.getTags();
         PageInfo<Tag> pageInfo = new PageInfo<>(list);
         Assert.assertEquals(pageInfo.getTotal(), 0);
+    }
+
+    @Autowired
+    ITagsService tagsService;
+
+    @Test
+    public void addTag() throws Exception {
+        List<Tag> tags = new ArrayList<>();
+        tags.add(new Tag().setTagName("Liunx"));
+        tags.add(new Tag().setTagName("Redis"));
+        tagsService.addTags(tags);
     }
 
 }

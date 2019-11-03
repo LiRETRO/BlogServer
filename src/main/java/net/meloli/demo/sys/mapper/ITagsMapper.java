@@ -11,6 +11,20 @@ import java.util.List;
 public interface ITagsMapper {
 
     /**
+     * 插入单个数据
+     * @param tag
+     * @return
+     */
+    int insert(Tag tag);
+
+    /**
+     * 插入所有数据
+     * @param tags
+     * @return
+     */
+    int insertAll(List<Tag> tags);
+
+    /**
      * 获取Tags
      * @return
      */

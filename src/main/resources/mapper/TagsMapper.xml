@@ -13,4 +13,37 @@
     <select id="getTags" resultMap="baseResultMap">
         SELECT * FROM tags
     </select>
+
+    <insert id="insert" parameterType="Tag">
+        INSERT INTO tags
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            tag_id, tag_name,
+            <if test="archiveCount != null">
+                archiveCount,
+            </if>
+            <if test="createDate != null">
+                create_date
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            #{tagId, jdbcType=VARCHAR}, #{tagName, jdbcType=VARCHAR},
+            <if test="archiveCount != null">
+                #{archiveCount, jdbcType=INTEGER},
+            </if>
+            <if test="createDate != null">
+                #{createDate, jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertAll" parameterType="java.util.List">
+        INSERT INTO tags(tag_id, tag_name)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+        (
+            #{item.tagId, jdbcType=VARCHAR},
+            #{item.tagName, jdbcType=VARCHAR}
+        )
+        </foreach>
+    </insert>
 </mapper>

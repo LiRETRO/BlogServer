@@ -1,6 +1,7 @@
 package net.meloli.demo.sys.entity;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.Date;
 
@@ -11,6 +12,7 @@ import java.util.Date;
  * @Date 2019/11/1 20:23
  */
 @Data
+@Accessors(chain = true)
 public class Tag {
 
     /**

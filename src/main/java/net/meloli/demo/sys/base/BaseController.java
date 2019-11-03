@@ -23,7 +23,6 @@ public class BaseController extends BaseContext {
         this.request = request;
         this.response = response;
         this.session = request.getSession();
-        // 支持任何访问 - 2018-07-02 朱宇不要设置允许任何访问进入系统
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type");
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
