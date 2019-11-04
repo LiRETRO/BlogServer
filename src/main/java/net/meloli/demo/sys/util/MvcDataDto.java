@@ -1,9 +1,13 @@
 package net.meloli.demo.sys.util;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
 import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
 
+@Data
+@Accessors(chain = true)
 public class MvcDataDto<T> implements Serializable {
 
     private static final long serialVersionUID = -4505655308965878999L;
@@ -31,58 +35,4 @@ public class MvcDataDto<T> implements Serializable {
     private Object param;
     // 返回结果冗余
     private Object resultObjMore;
-
-    public Integer getCode() {
-        return code;
-    }
-
-    public MvcDataDto setCode(Integer code) {
-        this.code = code;
-        return this;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public MvcDataDto setMessage(String message) {
-        this.message = message;
-        return this;
-    }
-
-    public Page getPage() {
-        return page;
-    }
-
-    public MvcDataDto setPage(Page page) {
-        this.page = page;
-        return this;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public MvcDataDto setData(T data) {
-        this.data = data;
-        return this;
-    }
-
-    public Object getParam() {
-        return param;
-    }
-
-    public MvcDataDto setParam(Object param) {
-        this.param = param;
-        return this;
-    }
-
-    public Object getResultObjMore() {
-        return resultObjMore;
-    }
-
-    public MvcDataDto setResultObjMore(Object resultObjMore) {
-        this.resultObjMore = resultObjMore;
-        return this;
-    }
 }

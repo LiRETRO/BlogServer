@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import net.meloli.demo.sys.dto.BlogPrevAndNextDTO;
 import net.meloli.demo.sys.dto.VisitDto;
 import net.meloli.demo.sys.entity.Blog;
+import net.meloli.demo.sys.mapper.IBlogMapper;
 import net.meloli.demo.sys.mongodb.util.MongoDBUtils;
 import net.meloli.demo.sys.rabbitmq.config.RabbitMQConfig;
 import net.meloli.demo.sys.rabbitmq.service.IProducerService;
@@ -32,6 +33,8 @@ public class BlogServiceImpl implements IBlogService {
 
     @Autowired
     MongoTemplate mongoTemplate;
+    @Autowired
+    IBlogMapper iBlogMapper;
 
     @Autowired
     IProducerService iProducerService;
@@ -81,7 +84,7 @@ public class BlogServiceImpl implements IBlogService {
         blog.setBlogVisitedCount(0L);
         blog.setBlogPublisher("LiRETRO");
         blog.setBlogPublisherCode("");
-        mongoTemplate.save(blog, MongoDBUtils.CollectionName.BLOG);
+//        mongoTemplate.save(blog, MongoDBUtils.CollectionName.BLOG);
         data.setCode(HttpStatus.OK.value());
         data.setMessage("发布博客成功！");
         return data;

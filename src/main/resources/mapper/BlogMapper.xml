@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.meloli.demo.sys.mapper.IBlogMapper">
+    <resultMap id="baseResultMap" type="Blog">
+        <id column="blog_id" property="blogId" jdbcType="VARCHAR"></id>
+        <result column="blog_title" property="blogTitle" jdbcType="VARCHAR"></result>
+        <result column="blog_sub_title" property="blogSubTitle" jdbcType="VARCHAR"></result>
+        <result column="blog_content" property="blogContent" jdbcType="VARCHAR"></result>
+        <result column="blog_publish_date" property="blogPublishDate" jdbcType="TIMESTAMP"></result>
+        <result column="blog_publisher" property="blogPublisher" jdbcType="VARCHAR"></result>
+        <result column="blog_publisher_code" property="blogPublisherCode" jdbcType="VARCHAR"></result>
+        <result column="blog_visited_count" property="blogVisitedCount" jdbcType="INTEGER"></result>
+        <result column="blog_is_del" property="blogIsDel" jdbcType="BIT"></result>
+        <result column="blog_img_path_arr" property="blogImgPathArr" jdbcType="VARCHAR"></result>
+        <result column="blog_last_publisher_date" property="blogLastPublisherDate" jdbcType="TIMESTAMP"></result>
+    </resultMap>
+
+    <sql id="baseColumn">
+        blog_id, blog_title, blog_sub_title, blog_content, blog_publish_date, blog_publisher, blog_publisher_code, blog_visited_count, blog_is_del, blog_img_path_arr, blog_last_publisher_date
+    </sql>
+    <sql id="simpleColumn">
+        blog_id, blog_title, blog_sub_title, blog_publish_date, blog_publisher, blog_publisher_code, blog_visited_count, blog_is_del, blog_last_publisher_date
+    </sql>
+
+    <select id="getBlogList" resultMap="baseResultMap">
+        SELECT
+        <include refid="baseColumn"></include>
+        FROM blog
+        WHERE blog_is_del = 0
+    </select>
+
+    <insert id="insert" parameterType="Tag">
+        INSERT INTO tags
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            tag_id, tag_name,
+            <if test="archiveCount != null">
+                archiveCount,
+            </if>
+            <if test="createDate != null">
+                create_date
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            #{tagId, jdbcType=VARCHAR}, #{tagName, jdbcType=VARCHAR},
+            <if test="archiveCount != null">
+                #{archiveCount, jdbcType=INTEGER},
+            </if>
+            <if test="createDate != null">
+                #{createDate, jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertAll" parameterType="java.util.List">
+        INSERT INTO tags(tag_id, tag_name)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+        (
+            #{item.tagId, jdbcType=VARCHAR},
+            #{item.tagName, jdbcType=VARCHAR}
+        )
+        </foreach>
+    </insert>
+</mapper>
