@@ -12,6 +12,7 @@ import net.meloli.demo.sys.util.RedisKeyHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -69,7 +70,7 @@ public class TagsServiceImpl implements ITagsService {
     @Override
     public List<Tag> getTags() throws Exception {
         List<Tag> tags = getHashList(Tag.class, RedisKeyHolder.TAGS.getKey());
-        if (tags == null) {
+        if (CollectionUtils.isEmpty(tags)) {
             tags = tagsMapper.getTags();
             tags.stream().peek(tag -> setHashObj(RedisKeyHolder.TAGS.getKey(), tag.getTagId(), tag));
         }

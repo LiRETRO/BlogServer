@@ -14,14 +14,14 @@
         <result column="blog_visited_count" property="blogVisitedCount" jdbcType="INTEGER"></result>
         <result column="blog_is_del" property="blogIsDel" jdbcType="BIT"></result>
         <result column="blog_img_path_arr" property="blogImgPathArr" jdbcType="VARCHAR"></result>
-        <result column="blog_last_publisher_date" property="blogLastPublisherDate" jdbcType="TIMESTAMP"></result>
+        <result column="blog_last_publish_date" property="blogLastPublishDate" jdbcType="TIMESTAMP"></result>
     </resultMap>
 
     <sql id="baseColumn">
-        blog_id, blog_title, blog_sub_title, blog_content, blog_publish_date, blog_publisher, blog_publisher_code, blog_visited_count, blog_is_del, blog_img_path_arr, blog_last_publisher_date
+        blog_id, blog_title, blog_sub_title, blog_content, blog_publish_date, blog_publisher, blog_publisher_code, blog_visited_count, blog_is_del, blog_img_path_arr, blog_last_publish_date
     </sql>
     <sql id="simpleColumn">
-        blog_id, blog_title, blog_sub_title, blog_publish_date, blog_publisher, blog_publisher_code, blog_visited_count, blog_is_del, blog_last_publisher_date
+        blog_id, blog_title, blog_sub_title, blog_publish_date, blog_publisher, blog_publisher_code, blog_visited_count, blog_is_del, blog_last_publish_date
     </sql>
 
     <select id="getBlogList" resultMap="baseResultMap">
@@ -29,37 +29,65 @@
         <include refid="baseColumn"></include>
         FROM blog
         WHERE blog_is_del = 0
+        ORDER BY blog_publish_date DESC
     </select>
 
-    <insert id="insert" parameterType="Tag">
-        INSERT INTO tags
+    <select id="getPrevAndNext" resultMap="baseResultMap">
+        SELECT
+        <include refid="simpleColumn"></include>
+        FROM blog
+        WHERE blog_is_del = 0 AND blog_id IN (
+            SELECT CASE WHEN SIGN(b.blog_id - #{blogId}) &gt; 0 THEN MIN(b.blog_id)
+            WHEN SIGN(b.blog_id - #{blogId}) &lt; 0 THEN MAX(b.blog_id) END
+            FROM blog b
+            WHERE b.blog_id != #{blogId}
+            GROUP BY SIGN(b.blog_id - #{blogId})
+            ORDER BY SIGN(b.blog_id - #{blogId})
+        )
+        ORDER BY blog_id
+   </select>
+
+    <insert id="insert" parameterType="Blog">
+        INSERT INTO blog
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            tag_id, tag_name,
-            <if test="archiveCount != null">
-                archiveCount,
+            blog_id, blog_title, blog_sub_title, blog_content, blog_publisher, blog_publisher_code,
+            <if test="blogPublishDate != null">
+                blog_publish_date
             </if>
-            <if test="createDate != null">
-                create_date
+            <if test="blogImgPathArr != null">
+                blog_img_path_arr
+            </if>
+            <if test="blogLastPublishDate != null">
+                blog_last_publish_date
             </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
-            #{tagId, jdbcType=VARCHAR}, #{tagName, jdbcType=VARCHAR},
-            <if test="archiveCount != null">
-                #{archiveCount, jdbcType=INTEGER},
+            #{blog_id, jdbcType=VARCHAR}, #{blog_title, jdbcType=VARCHAR}, #{blog_sub_title, jdbcType=VARCHAR},
+            #{blog_content, jdbcType=VARCHAR}, #{blog_publisher, jdbcType=VARCHAR}, #{blog_publisher_code, jdbcType=VARCHAR},
+            <if test="blogPublishDate != null">
+                #{blog_publish_date, jdbcType=TIMSTAMP}
             </if>
-            <if test="createDate != null">
-                #{createDate, jdbcType=TIMESTAMP}
+            <if test="blogImgPathArr != null">
+                #{blog_img_path_arr, jdbcType=VARCHAR}
             </if>
+            <if test="blogLastPublishDate != null">
+                #{blog_last_publish_date, jdbcType=TIMESTAMP}
+            </if>17673
         </trim>
     </insert>
 
     <insert id="insertAll" parameterType="java.util.List">
-        INSERT INTO tags(tag_id, tag_name)
+        INSERT INTO blog(blog_id, blog_title, blog_sub_title, blog_content, blog_publisher, blog_publisher_code, blog_img_path_arr)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
         (
-            #{item.tagId, jdbcType=VARCHAR},
-            #{item.tagName, jdbcType=VARCHAR}
+            #{item.blogId, jdbcType=VARCHAR},
+            #{item.blogTitle, jdbcType=VARCHAR},
+            #{item.blogSubTitle, jdbcType=VARCHAR},
+            #{item.blogContent, jdbcType=VARCHAR},
+            #{item.blogPublisher, jdbcType=VARCHAR},
+            #{item.blogPublisherCode, jdbcType=VARCHAR},
+            #{item.blogImgPathArr, jdbcType=VARCHAR}
         )
         </foreach>
     </insert>

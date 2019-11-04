@@ -1,6 +1,7 @@
 package net.meloli.demo.sys.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageHelper;
 import net.meloli.demo.sys.dto.BlogPrevAndNextDTO;
 import net.meloli.demo.sys.dto.VisitDto;
 import net.meloli.demo.sys.entity.Blog;
@@ -21,6 +22,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -52,19 +54,13 @@ public class BlogServiceImpl implements IBlogService {
         MvcDataDto<List<Blog>> data = MvcDataDto.getInstance();
         Page page = param.getPage();
         if (page != null) {
-            Query query = new Query();
-            query.with(new Sort(Sort.Direction.DESC, "blogPublishDate"));
-            Long skip = (long)(page.getPageNum() - 1) * page.getPageSize();
-            query.skip(skip);
-            query.limit(page.getPageSize());
-            Long totalNum = mongoTemplate.count(new Query(), MongoDBUtils.CollectionName.BLOG);
-            page.setTotalNum(totalNum);
-            List<Blog> blogList = mongoTemplate.find(query, Blog.class, MongoDBUtils.CollectionName.BLOG);
-            blogList = blogList.stream()
+            PageHelper.startPage(page.getPageNum(), page.getPageSize());
+            List<Blog> blogs = iBlogMapper.getBlogList(null);
+            blogs = blogs.stream()
                     .peek(item -> item.setBlogContent(item.getBlogContent().replaceAll("<[^>]*>", "")))
                     .collect(Collectors.toList());
             data.setPage(page);
-            data.setData(blogList);
+            data.setData(blogs);
             data.setCode(HttpStatus.OK.value());
         }
         return data;
@@ -84,9 +80,12 @@ public class BlogServiceImpl implements IBlogService {
         blog.setBlogVisitedCount(0L);
         blog.setBlogPublisher("LiRETRO");
         blog.setBlogPublisherCode("");
+        int record = iBlogMapper.insert(blog);
 //        mongoTemplate.save(blog, MongoDBUtils.CollectionName.BLOG);
-        data.setCode(HttpStatus.OK.value());
-        data.setMessage("发布博客成功！");
+        if (record == 1) {
+            data.setCode(HttpStatus.OK.value());
+            data.setMessage("发布博客成功！");
+        }
         return data;
     }
 
@@ -133,7 +132,17 @@ public class BlogServiceImpl implements IBlogService {
     public MvcDataDto<BlogPrevAndNextDTO> getBlogPrevAndNext(String blogId) {
         MvcDataDto<BlogPrevAndNextDTO> data = MvcDataDto.getInstance();
         BlogPrevAndNextDTO blogPrevAndNextDTO = new BlogPrevAndNextDTO();
-        // 上一条
+        List<Blog> prevAndNext = iBlogMapper.getPrevAndNext(blogId);
+        if (!CollectionUtils.isEmpty(prevAndNext)) {
+            prevAndNext.forEach(blog -> {
+                if (Long.parseLong(blog.getBlogId()) > Long.parseLong(blogId)) {
+                    blogPrevAndNextDTO.setNext(blog);
+                } else {
+                    blogPrevAndNextDTO.setPrev(blog);
+                }
+            });
+        }
+        /*// 上一条
         Query lastOne = new Query();
         lastOne.addCriteria(Criteria.where("blogId").lt(blogId)).with(new Sort(Sort.Direction.DESC, "blogId")).limit(1);
         Blog lastOneBlog = mongoTemplate.findOne(lastOne, Blog.class, MongoDBUtils.CollectionName.BLOG);
@@ -142,7 +151,7 @@ public class BlogServiceImpl implements IBlogService {
         Query nextOne = new Query();
         nextOne.addCriteria(Criteria.where("blogId").gt(blogId)).with(new Sort(Sort.Direction.ASC, "blogId")).limit(1);
         Blog nextOneBlog = mongoTemplate.findOne(nextOne, Blog.class, MongoDBUtils.CollectionName.BLOG);
-        blogPrevAndNextDTO.setNext(nextOneBlog);
+        blogPrevAndNextDTO.setNext(nextOneBlog);*/
         data.setCode(HttpStatus.OK.value());
         data.setMessage("成功");
         data.setData(blogPrevAndNextDTO);

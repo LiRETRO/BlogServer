@@ -6,6 +6,7 @@ import com.netflix.discovery.converters.Auto;
 import net.meloli.demo.sys.controller.BlogController;
 import net.meloli.demo.sys.entity.Blog;
 import net.meloli.demo.sys.entity.Tag;
+import net.meloli.demo.sys.mapper.IBlogMapper;
 import net.meloli.demo.sys.mapper.ITagsMapper;
 import net.meloli.demo.sys.mongodb.util.MongoDBUtils;
 import net.meloli.demo.sys.rabbitmq.config.RabbitMQConfig;
@@ -19,7 +20,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -105,6 +108,26 @@ public class DemoApplicationTests {
         tags.add(new Tag().setTagName("Liunx"));
         tags.add(new Tag().setTagName("Redis"));
         tagsService.addTags(tags);
+    }
+
+    @Autowired
+    IBlogMapper iBlogMapper;
+
+    @Test
+    public void insertToMysqlFromMongodb() {
+        Query query = new Query();
+        query.with(new Sort(Sort.Direction.DESC, "blogPublishDate"));
+        query.skip(0);
+        query.limit(20);
+        List<Blog> blogList = mongoTemplate.find(query, Blog.class, MongoDBUtils.CollectionName.BLOG);
+        System.out.println(blogList);
+    }
+
+    @Test
+    public void getBlogList() {
+        PageHelper.startPage(1, 1);
+        List<Blog> blogs = iBlogMapper.getBlogList(null);
+        Assert.assertEquals(1l, blogs.size());
     }
 
 }

@@ -1,6 +1,10 @@
 package net.meloli.demo.sys.mapper;
 
+import net.meloli.demo.sys.entity.Blog;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @InterfaceName IBlogMapper
@@ -12,4 +16,31 @@ import org.springframework.stereotype.Component;
 @Component
 public interface IBlogMapper {
 
+    /**
+     * 插入Blog
+     * @param blog
+     * @return
+     */
+    int insert(Blog blog);
+
+    /**
+     * 插入所有的Blog
+     * @param blogList
+     * @return
+     */
+    int insertAll(List<Blog> blogList);
+
+    /**
+     * 分页获取博客
+     * @param blog
+     * @return
+     */
+    List<Blog> getBlogList(Blog blog);
+
+    /**
+     * 通过当前博客Id获取上一篇/下一篇文章
+     * @param blogId
+     * @return
+     */
+    List<Blog> getPrevAndNext(@Param("blogId") String blogId);
 }

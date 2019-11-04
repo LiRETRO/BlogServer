@@ -51,5 +51,5 @@ public class Blog implements Serializable {
     /**
      * 文章最后编辑时间
      */
-    private Date blogLastPublisherDate;
+    private Date blogLastPublishDate;
 }
