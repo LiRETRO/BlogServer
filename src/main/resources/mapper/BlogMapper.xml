@@ -26,7 +26,14 @@
 
     <select id="getBlogList" resultMap="baseResultMap">
         SELECT
-        <include refid="baseColumn"></include>
+        <choose>
+            <when test="blog.searchType == 0">
+                <include refid="simpleColumn"/>
+            </when>
+            <otherwise>
+                <include refid="baseColumn"/>
+            </otherwise>
+        </choose>
         FROM blog
         WHERE blog_is_del = 0
         ORDER BY blog_publish_date DESC
@@ -34,7 +41,7 @@
 
     <select id="getPrevAndNext" resultMap="baseResultMap">
         SELECT
-        <include refid="simpleColumn"></include>
+        <include refid="simpleColumn"/>
         FROM blog
         WHERE blog_is_del = 0 AND blog_id IN (
             SELECT CASE WHEN SIGN(b.blog_id - #{blogId}) &gt; 0 THEN MIN(b.blog_id)

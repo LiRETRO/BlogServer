@@ -1,8 +1,10 @@
 package net.meloli.demo.sys.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import net.meloli.demo.sys.dto.BlogPrevAndNextDTO;
+import net.meloli.demo.sys.dto.BlogSearchConditionDTO;
 import net.meloli.demo.sys.dto.VisitDto;
 import net.meloli.demo.sys.entity.Blog;
 import net.meloli.demo.sys.mapper.IBlogMapper;
@@ -23,10 +25,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service("blogService")
@@ -46,19 +50,31 @@ public class BlogServiceImpl implements IBlogService {
 
     /**
      * 获取博客列表
-     *
-     * @return MvcDataDto
-     */
+     * @MethodName: getBlogList
+     * @Param: [param]
+     * @Return: net.meloli.demo.sys.util.MvcDataDto<java.util.List<net.meloli.demo.sys.entity.Blog>>
+     * @Exception
+     * @Author: LiRETRO
+     * @Date: 19-11-5
+    **/
     @Override
     public MvcDataDto<List<Blog>> getBlogList(MvcDataDto param) {
         MvcDataDto<List<Blog>> data = MvcDataDto.getInstance();
         Page page = param.getPage();
         if (page != null) {
             PageHelper.startPage(page.getPageNum(), page.getPageSize());
-            List<Blog> blogs = iBlogMapper.getBlogList(null);
-            blogs = blogs.stream()
-                    .peek(item -> item.setBlogContent(item.getBlogContent().replaceAll("<[^>]*>", "")))
-                    .collect(Collectors.toList());
+            JSONObject jsonObject = new JSONObject((Map<String, Object>) param.getParam());
+            BlogSearchConditionDTO searchConditionDTO = JSON.toJavaObject(jsonObject, BlogSearchConditionDTO.class);
+            List<Blog> blogs = iBlogMapper.getBlogList(searchConditionDTO);
+            /**
+             * 只有在完全查询时才过滤博客正文
+             * 简单查询时不会查询blogContent字段
+             **/
+            if (searchConditionDTO.getSearchType() == 1) {
+                blogs = blogs.stream()
+                        .peek(item -> item.setBlogContent(item.getBlogContent().replaceAll("<[^>]*>", "")))
+                        .collect(Collectors.toList());
+            }
             data.setPage(page);
             data.setData(blogs);
             data.setCode(HttpStatus.OK.value());

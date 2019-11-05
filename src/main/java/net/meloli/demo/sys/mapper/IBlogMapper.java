@@ -1,5 +1,6 @@
 package net.meloli.demo.sys.mapper;
 
+import net.meloli.demo.sys.dto.BlogSearchConditionDTO;
 import net.meloli.demo.sys.entity.Blog;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
@@ -32,10 +33,10 @@ public interface IBlogMapper {
 
     /**
      * 分页获取博客
-     * @param blog
+     * @param blogSearchConditionDTO
      * @return
      */
-    List<Blog> getBlogList(Blog blog);
+    List<Blog> getBlogList(@Param("blog") BlogSearchConditionDTO blogSearchConditionDTO);
 
     /**
      * 通过当前博客Id获取上一篇/下一篇文章
