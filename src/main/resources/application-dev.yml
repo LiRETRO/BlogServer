@@ -27,12 +27,12 @@ spring:
     password: "123456"
   # Redis配置
   redis:
-    timeout: 50
+    timeout: 1000
     password: blogbadass
     jedis:
       pool:
         max-idle: 10
-        max-wait: -1
+        max-wait: 1000
         max-active: 10
     sentinel:
       master: blogmaster

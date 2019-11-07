@@ -18,7 +18,7 @@
     </resultMap>
 
     <sql id="baseColumn">
-        blog_id, blog_title, blog_sub_title, blog_content, blog_publish_date, blog_publisher, blog_publisher_code, blog_visited_count, blog_is_del, blog_img_path_arr, blog_last_publish_date
+        blog_id, blog_title, blog_sub_title, blog_content, blog_cover_attach_id, blog_content_attach_id, blog_publish_date, blog_publisher, blog_publisher_code, blog_visited_count, blog_is_del, blog_cover_image_paths, blog_content_image_paths, blog_last_publish_date
     </sql>
     <sql id="simpleColumn">
         blog_id, blog_title, blog_sub_title, blog_publish_date, blog_publisher, blog_publisher_code, blog_visited_count, blog_is_del, blog_last_publish_date
@@ -84,7 +84,7 @@
     </insert>
 
     <insert id="insertAll" parameterType="java.util.List">
-        INSERT INTO blog(blog_id, blog_title, blog_sub_title, blog_content, blog_publisher, blog_publisher_code, blog_img_path_arr)
+        INSERT INTO blog(blog_id, blog_title, blog_sub_title, blog_content, blog_publisher, blog_publisher_code)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
         (
@@ -93,8 +93,7 @@
             #{item.blogSubTitle, jdbcType=VARCHAR},
             #{item.blogContent, jdbcType=VARCHAR},
             #{item.blogPublisher, jdbcType=VARCHAR},
-            #{item.blogPublisherCode, jdbcType=VARCHAR},
-            #{item.blogImgPathArr, jdbcType=VARCHAR}
+            #{item.blogPublisherCode, jdbcType=VARCHAR}
         )
         </foreach>
     </insert>
