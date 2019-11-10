@@ -39,6 +39,11 @@ public class Attachment {
     @ApiModelProperty(value = "附件老名称", dataType = "String")
     private String attachOldName;
     /**
+     * 附件老名称
+     */
+    @ApiModelProperty(value = "附件大小", dataType = "Long")
+    private Long attachSize;
+    /**
      * 附件路径
      */
     @ApiModelProperty(value = "附件路径", dataType = "String")

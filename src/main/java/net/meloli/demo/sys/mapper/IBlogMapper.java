@@ -44,4 +44,24 @@ public interface IBlogMapper {
      * @return
      */
     List<Blog> getPrevAndNext(@Param("blogId") String blogId);
+
+    /**
+     * 根据博客Id获取博客详情
+     * @MethodName: getBlogDetail
+     * @Param: [blogId]
+     * @Return: net.meloli.demo.sys.entity.Blog
+     * @Author: LiRETRO
+     * @Date: 2019/11/9
+    **/
+    Blog getBlogDetail(String blogId);
+
+    /**
+     * 删除博客
+     * @MethodName: deleteBlog
+     * @Param: [blogId]
+     * @Return: int
+     * @Author: LiRETRO
+     * @Date: 2019/11/10
+    **/
+    int deleteBlog(String blogId);
 }

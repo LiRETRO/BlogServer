@@ -43,6 +43,11 @@ public class Blog implements Serializable {
     @ApiModelProperty(value = "博客内容图片附件Id", dataType = "String")
     private String blogContentAttachNo;
     /**
+     * 博客Tags
+     */
+    @ApiModelProperty(value = "博客的Tags", dataType = "String", example = "Liunx,Redis,Sentinel")
+    private String blogTags;
+    /**
      * 发表时间
      */
     @ApiModelProperty(value = "博客首次发布时间", dataType = "Date")

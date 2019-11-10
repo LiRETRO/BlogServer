@@ -4,6 +4,11 @@ server:
 spring:
   # 开发profile
   profiles: "dev"
+  # 设置请求大小限制
+  servlet:
+    multipart:
+      maxRequestSize: 50MB
+      maxFileSize: 20MB
   # 数据库连接配置
   datasource:
     driver-class-name: com.mysql.jdbc.Driver

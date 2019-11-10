@@ -5,27 +5,19 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import net.meloli.demo.sys.dto.BlogPrevAndNextDTO;
 import net.meloli.demo.sys.dto.BlogSearchConditionDTO;
-import net.meloli.demo.sys.dto.VisitDto;
 import net.meloli.demo.sys.entity.Blog;
 import net.meloli.demo.sys.mapper.IBlogMapper;
-import net.meloli.demo.sys.mongodb.util.MongoDBUtils;
-import net.meloli.demo.sys.rabbitmq.config.RabbitMQConfig;
 import net.meloli.demo.sys.rabbitmq.service.IProducerService;
 import net.meloli.demo.sys.service.inf.IBlogService;
 import net.meloli.demo.sys.util.IdWorker;
-import net.meloli.demo.sys.util.IpUtils;
 import net.meloli.demo.sys.util.MvcDataDto;
 import net.meloli.demo.sys.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -37,16 +29,16 @@ import java.util.stream.Collectors;
 @Transactional(rollbackFor = Exception.class)
 public class BlogServiceImpl implements IBlogService {
 
-    @Autowired
-    MongoTemplate mongoTemplate;
-    @Autowired
-    IBlogMapper iBlogMapper;
+    private MongoTemplate mongoTemplate;
+    private IProducerService iProducerService;
+    private IBlogMapper iBlogMapper;
 
     @Autowired
-    IProducerService iProducerService;
-
-    @Autowired
-    HttpServletRequest servletRequest;
+    public BlogServiceImpl (MongoTemplate mongoTemplate, IBlogMapper iBlogMapper, IProducerService iProducerService) {
+        this.mongoTemplate = mongoTemplate;
+        this.iBlogMapper = iBlogMapper;
+        this.iProducerService = iProducerService;
+    }
 
     /**
      * 获取博客列表
@@ -112,11 +104,12 @@ public class BlogServiceImpl implements IBlogService {
     @Override
     public MvcDataDto<Blog> getBlogDetail(String id) {
         MvcDataDto<Blog> data = MvcDataDto.getInstance();
-        Query query = new Query();
+        /*Query query = new Query();
         query.addCriteria(Criteria.where("blogId").is(id));
         Blog detail = mongoTemplate.findOne(query, Blog.class, MongoDBUtils.CollectionName.BLOG);
         VisitDto visitDto = new VisitDto(id, new Date(), IpUtils.getRemoteIp(servletRequest));
-        iProducerService.send(RabbitMQConfig.QUEUE, JSON.toJSONString(visitDto));
+        iProducerService.send(RabbitMQConfig.QUEUE, JSON.toJSONString(visitDto));*/
+        Blog detail = iBlogMapper.getBlogDetail(id);
         data.setData(detail);
         data.setCode(HttpStatus.OK.value());
         return data;
@@ -130,9 +123,10 @@ public class BlogServiceImpl implements IBlogService {
     @Override
     public MvcDataDto deleteBlog(String blogId) {
         MvcDataDto data = MvcDataDto.getInstance();
-        Query query = new Query();
+        /*Query query = new Query();
         query.addCriteria(Criteria.where("blogId").is(blogId));
-        mongoTemplate.remove(query, MongoDBUtils.CollectionName.BLOG);
+        mongoTemplate.remove(query, MongoDBUtils.CollectionName.BLOG);*/
+        int num = iBlogMapper.deleteBlog(blogId);
         data.setCode(HttpStatus.OK.value());
         data.setMessage("删除成功！");
         return data;

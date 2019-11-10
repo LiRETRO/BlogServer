@@ -1,6 +1,7 @@
 package net.meloli.demo.sys.service.inf;
 
 import net.meloli.demo.sys.dto.FileDto;
+import net.meloli.demo.sys.entity.Attachment;
 import net.meloli.demo.sys.util.MvcDataDto;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,4 +26,14 @@ public interface IUploadService {
      * @Date: 19-11-7
     **/
     MvcDataDto<List<FileDto>> pictureUpload(HttpServletRequest request) throws Exception;
+
+    /**
+     * 保存附件信息
+     * @MethodName: saveAttachment
+     * @Param: [attachment]
+     * @Return: net.meloli.demo.sys.util.MvcDataDto<net.meloli.demo.sys.entity.Attachment>
+     * @Author: LiRETRO
+     * @Date: 2019/11/8
+    **/
+    MvcDataDto<Attachment> saveAttachment(Attachment attachment) throws Exception;
 }

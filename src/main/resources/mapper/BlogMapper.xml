@@ -4,24 +4,28 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.meloli.demo.sys.mapper.IBlogMapper">
     <resultMap id="baseResultMap" type="Blog">
-        <id column="blog_id" property="blogId" jdbcType="VARCHAR"></id>
-        <result column="blog_title" property="blogTitle" jdbcType="VARCHAR"></result>
-        <result column="blog_sub_title" property="blogSubTitle" jdbcType="VARCHAR"></result>
-        <result column="blog_content" property="blogContent" jdbcType="VARCHAR"></result>
-        <result column="blog_publish_date" property="blogPublishDate" jdbcType="TIMESTAMP"></result>
-        <result column="blog_publisher" property="blogPublisher" jdbcType="VARCHAR"></result>
-        <result column="blog_publisher_code" property="blogPublisherCode" jdbcType="VARCHAR"></result>
-        <result column="blog_visited_count" property="blogVisitedCount" jdbcType="INTEGER"></result>
-        <result column="blog_is_del" property="blogIsDel" jdbcType="BIT"></result>
-        <result column="blog_img_path_arr" property="blogImgPathArr" jdbcType="VARCHAR"></result>
-        <result column="blog_last_publish_date" property="blogLastPublishDate" jdbcType="TIMESTAMP"></result>
+        <id column="blog_id" property="blogId" jdbcType="VARCHAR"/>
+        <result column="blog_title" property="blogTitle" jdbcType="VARCHAR"/>
+        <result column="blog_sub_title" property="blogSubTitle" jdbcType="VARCHAR"/>
+        <result column="blog_content" property="blogContent" jdbcType="VARCHAR"/>
+        <result column="blog_cover_attach_no" property="blogCoverAttachNo" jdbcType="VARCHAR"/>
+        <result column="blog_content_attach_id" property="blogContentAttachNo" jdbcType="VARCHAR"/>
+        <result column="blog_tags" property="blogTags" jdbcType="VARCHAR"/>
+        <result column="blog_publish_date" property="blogPublishDate" jdbcType="TIMESTAMP"/>
+        <result column="blog_publisher" property="blogPublisher" jdbcType="VARCHAR"/>
+        <result column="blog_publisher_code" property="blogPublisherCode" jdbcType="VARCHAR"/>
+        <result column="blog_visited_count" property="blogVisitedCount" jdbcType="INTEGER"/>
+        <result column="blog_is_del" property="blogIsDel" jdbcType="BIT"/>
+        <result column="blog_cover_image_paths" property="blogCoverImagePaths" jdbcType="VARCHAR"/>
+        <result column="blog_content_image_paths" property="blogContentImagePaths" jdbcType="VARCHAR"/>
+        <result column="blog_last_publish_date" property="blogLastPublishDate" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="baseColumn">
-        blog_id, blog_title, blog_sub_title, blog_content, blog_cover_attach_id, blog_content_attach_id, blog_publish_date, blog_publisher, blog_publisher_code, blog_visited_count, blog_is_del, blog_cover_image_paths, blog_content_image_paths, blog_last_publish_date
+        blog_id, blog_title, blog_sub_title, blog_content, blog_cover_attach_no, blog_content_attach_no, blog_tags, blog_publish_date, blog_publisher, blog_publisher_code, blog_visited_count, blog_is_del, blog_cover_image_paths, blog_content_image_paths, blog_last_publish_date
     </sql>
     <sql id="simpleColumn">
-        blog_id, blog_title, blog_sub_title, blog_publish_date, blog_publisher, blog_publisher_code, blog_visited_count, blog_is_del, blog_last_publish_date
+        blog_id, blog_title, blog_sub_title, blog_tags, blog_publish_date, blog_publisher, blog_publisher_code, blog_visited_count, blog_is_del, blog_last_publish_date
     </sql>
 
     <select id="getBlogList" resultMap="baseResultMap">
@@ -53,38 +57,56 @@
         )
         ORDER BY blog_id
    </select>
+    <select id="getBlogDetail" resultMap="baseResultMap">
+        SELECT
+        <include refid="baseColumn" />
+        FROM blog
+        WHERE blog_is_del = 0 AND blog_id = #{blogId, jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteBlog" parameterType="java.lang.String">
+        UPDATE blog SET blog_is_del = 1 WHERE blog_id = #{blogId, jdbcType=VARCHAR}
+    </delete>
 
     <insert id="insert" parameterType="Blog">
         INSERT INTO blog
         <trim prefix="(" suffix=")" suffixOverrides=",">
             blog_id, blog_title, blog_sub_title, blog_content, blog_publisher, blog_publisher_code,
+            blog_cover_attach_no, blog_content_attach_no,
             <if test="blogPublishDate != null">
                 blog_publish_date
             </if>
-            <if test="blogImgPathArr != null">
-                blog_img_path_arr
+            <if test="blogCoverImagePaths != null">
+                blog_cover_image+paths
+            </if>
+            <if test="blogContentImagePaths != null">
+                blog_content_image_paths
             </if>
             <if test="blogLastPublishDate != null">
                 blog_last_publish_date
             </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
-            #{blog_id, jdbcType=VARCHAR}, #{blog_title, jdbcType=VARCHAR}, #{blog_sub_title, jdbcType=VARCHAR},
-            #{blog_content, jdbcType=VARCHAR}, #{blog_publisher, jdbcType=VARCHAR}, #{blog_publisher_code, jdbcType=VARCHAR},
+            #{blogId, jdbcType=VARCHAR}, #{blogTitle, jdbcType=VARCHAR}, #{blogSubTitle, jdbcType=VARCHAR},
+            #{blogContent, jdbcType=VARCHAR}, #{blogPublisher, jdbcType=VARCHAR}, #{blogPublisherCode, jdbcType=VARCHAR},
+            #{blogCoverAttachNo, jdbcType=VARCHAR}, #{blogContentAttachNo, jdbcType=VARCHAR},
             <if test="blogPublishDate != null">
-                #{blog_publish_date, jdbcType=TIMSTAMP}
+                #{blogPublishDate, jdbcType=TIMESTAMP}
             </if>
-            <if test="blogImgPathArr != null">
-                #{blog_img_path_arr, jdbcType=VARCHAR}
+            <if test="blogCoverImagePaths != null">
+                #{blogCoverImagePaths, jdbcType=VARCHAR}
+            </if>
+            <if test="blogContentImagePaths != null">
+                #{blogContentImagePaths, jdbcType=VARCHAR}
             </if>
             <if test="blogLastPublishDate != null">
-                #{blog_last_publish_date, jdbcType=TIMESTAMP}
-            </if>17673
+                #{blogLastPublishDate, jdbcType=TIMESTAMP}
+            </if>
         </trim>
     </insert>
 
     <insert id="insertAll" parameterType="java.util.List">
-        INSERT INTO blog(blog_id, blog_title, blog_sub_title, blog_content, blog_publisher, blog_publisher_code)
+        INSERT INTO blog(blog_id, blog_title, blog_sub_title, blog_content, blog_publisher, blog_publisher_code, blog_cover_attach_no, blog_content_attach_no)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
         (
@@ -93,7 +115,9 @@
             #{item.blogSubTitle, jdbcType=VARCHAR},
             #{item.blogContent, jdbcType=VARCHAR},
             #{item.blogPublisher, jdbcType=VARCHAR},
-            #{item.blogPublisherCode, jdbcType=VARCHAR}
+            #{item.blogPublisherCode, jdbcType=VARCHAR},
+            #{item.blogCoverAttachNo, jdbcType=VARCHAR},
+            #{item.blogContentAttachNo, jdbcType=VARCHAR},
         )
         </foreach>
     </insert>

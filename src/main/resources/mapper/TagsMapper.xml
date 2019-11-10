@@ -4,10 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.meloli.demo.sys.mapper.ITagsMapper">
     <resultMap id="baseResultMap" type="tag">
-        <id column="tag_id" property="tagId" jdbcType="VARCHAR"></id>
-        <result column="tag_name" property="tagName" jdbcType="VARCHAR"></result>
-        <result column="archive_count" property="archiveCount" jdbcType="INTEGER"></result>
-        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"></result>
+        <id column="tag_id" property="tagId" jdbcType="VARCHAR"/>
+        <result column="tag_name" property="tagName" jdbcType="VARCHAR"/>
+        <result column="archive_count" property="archiveCount" jdbcType="INTEGER"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <select id="getTags" resultMap="baseResultMap">

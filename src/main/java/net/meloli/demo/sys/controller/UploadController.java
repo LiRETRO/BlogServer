@@ -5,10 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import net.meloli.demo.sys.base.BaseController;
 import net.meloli.demo.sys.service.inf.IUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -36,7 +33,7 @@ public class UploadController extends BaseController {
     **/
     @ApiOperation(value = "图片上传", notes = "图片上传")
     @CrossOrigin
-    @PutMapping("/pictureUpload")
+    @PostMapping("/pictureUpload")
     public Object pictureUpload(HttpServletRequest request) throws Exception {
         return iUploadService.pictureUpload(request);
     }
