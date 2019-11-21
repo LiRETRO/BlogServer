@@ -11,10 +11,12 @@ spring:
       maxFileSize: 20MB
   # 数据库连接配置
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: "jdbc:mysql://172.17.28.71:3306/blog?useSSL=false"
     username: "blogmanager"
     password: "123456"
+    druid:
+      validation-query: SELECT 1
   data:
     # MongoDB配置
     mongodb:
