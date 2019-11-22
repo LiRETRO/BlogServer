@@ -11,7 +11,7 @@ spring:
       maxFileSize: 20MB
   # 数据库连接配置
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
     url: "jdbc:mysql://172.17.28.71:3306/blog?useSSL=false"
     username: "blogmanager"
     password: "123456"
