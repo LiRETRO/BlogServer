@@ -1,0 +1,23 @@
+server:
+  # 端口配置
+  port: 8000
+spring:
+  # 开发profile
+  profiles: "dev"
+  # 设置请求大小限制
+  servlet:
+    multipart:
+      maxRequestSize: 50MB
+      maxFileSize: 20MB
+  # 数据库连接配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: "jdbc:mysql://rm-uf637f5sy7evd5985ko.mysql.rds.aliyuncs.com/ys_blog_db?useSSL=false&characterEncoding=UTF-8&useUnicode=true"
+    username: "andymaki"
+    password: "8566456aA"
+# MyBatis
+mybatis:
+  # 指定包下的Entity设置别名（默认为ClassName）
+  type-aliases-package: net.meloli.demo.sys.entity;net.meloli.demo.sys.dto;
+  # 指定Mapper的地址
+  mapper-locations: classpath:mapper/*.xml

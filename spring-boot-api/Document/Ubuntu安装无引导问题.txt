@@ -1,0 +1,10 @@
+准备一个U盘启动，进入试用ubuntu
+
+连接网络后打开终端输入：
+sudo -i 进入Root模式
+add-apt-repository ppa:yannubuntu/boot-repair && apt-get update 添加软件源并更新系统
+apt-get install -y boot-repair && boot-repair 安装Boot-repair并在安装完成后启动软件
+使用Recommended repair
+
+如果依旧有问题，进入Windows系统以管理员模式打开cmd:
+bcdedit /set "{bootmgr}" path \EFI\ubuntu\grubx64.efi

@@ -1,0 +1,31 @@
+一、使用yum安装Git：
+
+1
+sudo yum install git
+二、添加git用户：
+
+sudo useradd git
+三、查看CentOS内核版本，确定架构（x64、x86还是arm）
+
+uname -a　　
+四、下载与其对应的二进制安装包：
+
+wget https://dl.gogs.io/0.11.34/linux_amd64.tar.gz
+五、将安装包解压至git用户目录下（/home/git）并修改其权限和所有者：
+
+sudo tar -xf linux_amd64.tar.gz -C /home/git
+sudo chmod -R 700 /home/git/gogs
+sudo chown -R git:git /home/git/gogs
+六、使用git用户运行gogs：
+
+sudo su - git -c "cd /home/git/gogs && ./gogs web &"
+七、使用浏览器访问http://IP:3000，完成配置安装：
+
+八、添加启动项和守护进程：
+
+sudo ln -sf /home/git/gogs/scripts/systemd/gogs.service /usr/lib/systemd/
+sudo chmod u+x /home/git/gogs/scripts/systemd/gogs.service
+sudo ln -sf /home/git/gogs/scripts/init/centos/gogs /etc/init.d/
+sudo chmod u+x /home/git/gogs/scripts/init/centos/gogs
+sudo /sbin/chkconfig gogs on
+sudo service gogs restart

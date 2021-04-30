@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.meloli.demo.sys.mapper.IAttachmentMapper">
+    <resultMap id="baseResultMap" type="Attachment">
+        <id column="attach_id" property="attachId" jdbcType="VARCHAR"/>
+        <result column="attach_no" property="attachNo" jdbcType="VARCHAR"/>
+        <result column="attach_name" property="attachName" jdbcType="VARCHAR"/>
+        <result column="attach_old_name" property="attachOldName" jdbcType="VARCHAR"/>
+        <result column="attach_size" property="attachSize" jdbcType="BIGINT"/>
+        <result column="attach_path" property="attachPath" jdbcType="VARCHAR"/>
+        <result column="attach_type" property="attachType" jdbcType="VARCHAR"/>
+        <result column="uploader" property="uploader" jdbcType="VARCHAR"/>
+        <result column="upload_time" property="uploadTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="baseColumn">
+        attach_id, attach_no, attach_name, attach_old_name, attach_size, attach_path, attach_type, uploader, upload_time
+    </sql>
+    <insert id="insert">
+        INSERT INTO attachment(attach_id, attach_no, attach_name, attach_old_name, attach_size, attach_path, attach_type, uploader, upload_time) VALUES (#{attachment.attachId, jdbcType=VARCHAR}, #{attachment.attachNo, jdbcType=VARCHAR}, #{attachment.attachName, jdbcType=VARCHAR},
+                                       #{attachment.attachOldName, jdbcType=VARCHAR}, #{attachment.attachSize, jdbcType=BIGINT}, #{attachment.attachPath, jdbcType=VARCHAR},
+                                       #{attachment.attachType, jdbcType=VARCHAR}, #{attachment.uploader, jdbcType=VARCHAR}, #{attachment.uploadTime, jdbcType=TIMESTAMP})
+    </insert>
+</mapper>

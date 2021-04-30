@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.meloli.demo.sys.mapper.IBlogMapper">
+    <resultMap id="baseResultMap" type="Blog">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="blog_title" property="blogTitle" jdbcType="VARCHAR"/>
+        <result column="blog_sub_title" property="blogSubTitle" jdbcType="VARCHAR"/>
+        <result column="blog_content" property="blogContent" jdbcType="VARCHAR"/>
+        <result column="blog_cover_url" property="blogCoverUrl" jdbcType="VARCHAR"/>
+        <result column="blog_content_attach_id" property="blogContentAttachNo" jdbcType="VARCHAR"/>
+        <result column="blog_tags" property="blogTags" jdbcType="VARCHAR"/>
+        <result column="blog_publish_date" property="blogPublishDate" jdbcType="TIMESTAMP"/>
+        <result column="blog_publisher" property="blogPublisher" jdbcType="VARCHAR"/>
+        <result column="blog_publisher_code" property="blogPublisherCode" jdbcType="VARCHAR"/>
+        <result column="blog_visited_count" property="blogVisitedCount" jdbcType="INTEGER"/>
+        <result column="blog_is_del" property="blogIsDel" jdbcType="BIT"/>
+        <result column="blog_cover_image_paths" property="blogCoverImagePaths" jdbcType="VARCHAR"/>
+        <result column="blog_content_image_paths" property="blogContentImagePaths" jdbcType="VARCHAR"/>
+        <result column="blog_last_publish_date" property="blogLastPublishDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="baseColumn">
+        blog_id, blog_title, blog_sub_title, blog_content, blog_cover_attach_no, blog_content_attach_no, blog_tags, blog_publish_date, blog_publisher, blog_publisher_code, blog_visited_count, blog_is_del, blog_cover_image_paths, blog_content_image_paths, blog_last_publish_date
+    </sql>
+    <sql id="simpleColumn">
+        blog_id, blog_title, blog_sub_title, blog_tags, blog_publish_date, blog_publisher, blog_publisher_code, blog_visited_count, blog_is_del, blog_last_publish_date
+    </sql>
+
+    <select id="getBlogList" resultMap="baseResultMap">
+        SELECT
+        <choose>
+            <when test="blog.searchType == 0">
+                <include refid="simpleColumn"/>
+            </when>
+            <otherwise>
+                <include refid="baseColumn"/>
+            </otherwise>
+        </choose>
+        FROM blog
+        WHERE blog_is_del = 0
+        ORDER BY blog_publish_date DESC
+    </select>
+
+    <select id="getPrevAndNext" resultMap="baseResultMap">
+        SELECT
+        <include refid="simpleColumn"/>
+        FROM blog
+        WHERE blog_is_del = 0 AND blog_id IN (
+            SELECT CASE WHEN SIGN(b.blog_id - #{blogId}) &gt; 0 THEN MIN(b.blog_id)
+            WHEN SIGN(b.blog_id - #{blogId}) &lt; 0 THEN MAX(b.blog_id) END
+            FROM blog b
+            WHERE b.blog_id != #{blogId}
+            GROUP BY SIGN(b.blog_id - #{blogId})
+            ORDER BY SIGN(b.blog_id - #{blogId})
+        )
+        ORDER BY blog_id
+   </select>
+    <select id="getBlogDetail" resultMap="baseResultMap">
+        SELECT
+        <include refid="baseColumn" />
+        FROM blog
+        WHERE blog_is_del = 0 AND blog_id = #{blogId, jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteBlog" parameterType="java.lang.String">
+        UPDATE blog SET blog_is_del = 1 WHERE blog_id = #{blogId, jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="Blog">
+        INSERT INTO blog
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            blog_id, blog_title, blog_sub_title, blog_content, blog_publisher, blog_publisher_code,
+            blog_cover_attach_no, blog_content_attach_no,
+            <if test="blogPublishDate != null">
+                blog_publish_date
+            </if>
+            <if test="blogCoverImagePaths != null">
+                blog_cover_image+paths
+            </if>
+            <if test="blogContentImagePaths != null">
+                blog_content_image_paths
+            </if>
+            <if test="blogLastPublishDate != null">
+                blog_last_publish_date
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            #{blogId, jdbcType=VARCHAR}, #{blogTitle, jdbcType=VARCHAR}, #{blogSubTitle, jdbcType=VARCHAR},
+            #{blogContent, jdbcType=VARCHAR}, #{blogPublisher, jdbcType=VARCHAR}, #{blogPublisherCode, jdbcType=VARCHAR},
+            #{blogCoverAttachNo, jdbcType=VARCHAR}, #{blogContentAttachNo, jdbcType=VARCHAR},
+            <if test="blogPublishDate != null">
+                #{blogPublishDate, jdbcType=TIMESTAMP}
+            </if>
+            <if test="blogCoverImagePaths != null">
+                #{blogCoverImagePaths, jdbcType=VARCHAR}
+            </if>
+            <if test="blogContentImagePaths != null">
+                #{blogContentImagePaths, jdbcType=VARCHAR}
+            </if>
+            <if test="blogLastPublishDate != null">
+                #{blogLastPublishDate, jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertAll" parameterType="java.util.List">
+        INSERT INTO blog(blog_id, blog_title, blog_sub_title, blog_content, blog_publisher, blog_publisher_code, blog_cover_attach_no, blog_content_attach_no)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+        (
+            #{item.blogId, jdbcType=VARCHAR},
+            #{item.blogTitle, jdbcType=VARCHAR},
+            #{item.blogSubTitle, jdbcType=VARCHAR},
+            #{item.blogContent, jdbcType=VARCHAR},
+            #{item.blogPublisher, jdbcType=VARCHAR},
+            #{item.blogPublisherCode, jdbcType=VARCHAR},
+            #{item.blogCoverAttachNo, jdbcType=VARCHAR},
+            #{item.blogContentAttachNo, jdbcType=VARCHAR},
+        )
+        </foreach>
+    </insert>
+</mapper>

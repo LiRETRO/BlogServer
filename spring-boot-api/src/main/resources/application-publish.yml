@@ -1,0 +1,71 @@
+server:
+  # 端口配置
+  port: 8000
+spring:
+  # 开发profile
+  profiles: "dev"
+  # 设置请求大小限制
+  servlet:
+    multipart:
+      maxRequestSize: 50MB
+      maxFileSize: 20MB
+  # 数据库连接配置
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: "jdbc:mysql://172.17.28.71:3306/blog?useSSL=false"
+    username: "blogmanager"
+    password: "123456"
+  data:
+    # MongoDB配置
+    mongodb:
+      database: "blog"
+      host: "172.17.28.71"
+      port: 27017
+      authentication-database: "blog"
+      username: "blogmanager"
+      password: "123456"
+  # rabbitMQ配置
+  rabbitmq:
+    host: "172.17.28.71"
+    port: 5672
+    username: "blogmanager"
+    password: "123456"
+  # Redis配置
+  redis:
+    timeout: 50
+    password: blogbadass
+    jedis:
+      pool:
+        max-idle: 10
+        max-wait: -1
+        max-active: 10
+    sentinel:
+      master: blogmaster
+      nodes: 172.17.28.71:26379
+  # Zipkin配置
+  zipkin:
+    # 打开服务发现
+    locator:
+      discovery:
+        enabled: true
+    base-url: http://172.17.28.71:9411/
+  # sleuth配置
+  sleuth:
+    sampler:
+      # 采样比例为100%，默认为10%
+      probability: 1.0
+# 配置hystrix防护机制
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 50
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://blogmanager:123456@master:10237/eureka/
